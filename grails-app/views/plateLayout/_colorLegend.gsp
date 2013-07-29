@@ -1,9 +1,10 @@
-<%@ page import="org.nanocan.org.nanocan.layout.SpotType; org.nanocan.rppa.NumberOfCellsSeeded; org.nanocan.layoutnocan.layoorg.nanocan.layoutucer; org.norg.nanocan.layout.layout.CellLine; org.nanocan.layout.Treatment;" %>
+<%@ page import="org.nanocan.layout.SpotType; org.nanocan.layout.NumberOfCellsSeeded; org.nanocan.layout.Treatment; org.nanocan.layout.Inducer; org.nanocan.layout.CellLine" %>
+
 <head>
     <r:require module="colorPicker"/>
     <style>
         #draggableLegend { width:250px; padding: 0.5em; background-color: #ffffff; position: fixed;
-            z-index: 10000; opacity: 0.95; top: 150px; left: 50px;
+            z-index: 10000; opacity: 0.95; top: 150px; left: 50px; overflow: auto; height: 400px;
             border-color: #e6e6e6; border-bottom-width: 1px; border-style: solid;}
     </style>
     <r:script>

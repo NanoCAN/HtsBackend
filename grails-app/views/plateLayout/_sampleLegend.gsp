@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.Sample;" %>
+<%@ page import="org.nanocan.layout.Sample;" %>
 <html>
 <head>
     <style>

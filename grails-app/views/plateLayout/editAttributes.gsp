@@ -7,10 +7,10 @@
 </head>
 <body>
 <g:if test="${sampleProperty != 'sample'}">
-    <g:render template="colorLegend" model="${[sampleProperty: sampleProperty]}"></g:render>
+    <g:render plugin="HTSbackend" template="colorLegend" model="${[sampleProperty: sampleProperty]}"></g:render>
 </g:if>
 <g:else>
-    <g:render template="sampleLegend" model="${[layoutId: plateLayout.id]}"></g:render>
+    <g:render plugin="HTSbackend" template="sampleLegend" model="${[layoutId: plateLayout.id]}"></g:render>
 </g:else>
 
 <g:set var="well" value="${0}"/>

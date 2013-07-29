@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HTSbackend.iml" filepath="$PROJECT_DIR$/HTSbackend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/HTSbackend-grailsPlugins.iml" filepath="$PROJECT_DIR$/HTSbackend-grailsPlugins.iml" />
     </modules>
   </component>
 </project>

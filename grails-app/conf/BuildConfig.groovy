@@ -25,6 +25,11 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         runtime 'net.sourceforge.jtds:jtds:1.3.1'
         // runtime 'mysql:mysql-connector-java:5.1.21'
+
+        //xls file support
+        compile (group:'org.apache.poi', name:'poi', version:'3.9')
+        //xlxs file support
+        compile (group:'org.apache.poi', name:'poi-ooxml', version:'3.9')
     }
 
     plugins {
@@ -34,6 +39,7 @@ grails.project.dependency.resolution = {
             export = false
         }
 
+        compile ":jprogress:0.2"
         compile ":spring-security-core:1.2.7.3"
         compile ":spring-security-cas:1.0.5"
         compile ":spring-security-eventlog:0.2"
