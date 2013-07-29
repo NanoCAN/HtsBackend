@@ -29,27 +29,31 @@ import javax.xml.parsers.SAXParserFactory
 class XlsxImportService {
 
 
-    def getSheets(filePath){
+    def getSheets(resultFile){
 
+        def filePath = resultFile.filePath
         def fileEnding = FilenameUtils.getExtension(filePath)
         def sheets = []
 
         if(fileEnding == "xlsx")
         {
-            OPCPackage pkg = OPCPackage.open(filePath, PackageAccess.READ);
-
-            XSSFReader r = new XSSFReader(pkg)
-            XSSFReader.SheetIterator iterator = (XSSFReader.SheetIterator) r.getSheetsData()
-
-            while(iterator.hasNext())
-            {
-                iterator.next()
-                sheets << iterator.getSheetName()
-            }
+            sheets = processXLSX(filePath, sheets)
         }
 
         else if (fileEnding == "xls"){
-            def workbook = WorkbookFactory.create(new File(filePath));
+
+            def workbook
+                try{
+                    workbook = WorkbookFactory.create(new File(filePath))
+                }catch(org.apache.poi.hssf.OldExcelFormatException oefe){
+                 //if we have to deal with very old excel files, try to convert it using ssconvert (needs to be installed of course)
+                    Process p = Runtime.getRuntime().exec("ssconvert ${filePath} ${filePath}x")
+                    p.waitFor()
+                    resultFile.filePath = "${filePath}x"
+                    resultFile.save(flush:true)
+                    new File(filePath).delete()
+                    return processXLSX("${filePath}x", sheets)
+                }
             def numOfSheets = workbook.getNumberOfSheets()
             for (int i = 0; i < numOfSheets; i++)
             {
@@ -57,6 +61,19 @@ class XlsxImportService {
             }
         }
 
+        return sheets
+    }
+
+    private processXLSX(filePath, ArrayList sheets) {
+        OPCPackage pkg = OPCPackage.open(filePath, PackageAccess.READ);
+
+        XSSFReader r = new XSSFReader(pkg)
+        XSSFReader.SheetIterator iterator = (XSSFReader.SheetIterator) r.getSheetsData()
+
+        while (iterator.hasNext()) {
+            iterator.next()
+            sheets << iterator.getSheetName()
+        }
         return sheets
     }
 
@@ -93,7 +110,9 @@ class XlsxImportService {
     def parseXLSSheetToCSV(filePath, sheetIndex, minColNum) {
 
         def fileInputStream = new FileInputStream(filePath)
+
         def fileSystem = new POIFSFileSystem(fileInputStream)
+
         def baos = new ByteArrayOutputStream()
         def ps = new PrintStream(baos)
 

@@ -11,7 +11,7 @@ class Sample implements Serializable{
 
     static constraints = {
         name unique: true
-        type inList: ["siRNA", "miRNA inhibitor", "miRNA mimic"]
+        type inList: ["siRNA", "miRNA inhibitor", "miRNA mimic", "compound"]
         targetGene()
         color unique:  false, validator:  {val, obj -> (val != "#ffffff" && val != "#e0e0e0")}, nullable: false
     }

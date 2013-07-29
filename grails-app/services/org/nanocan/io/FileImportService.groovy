@@ -31,9 +31,7 @@ class FileImportService {
      */
     def getSheets(def slideInstance)
     {
-        def resultFile = slideInstance.resultFile
-        def filePath = resultFile.filePath
-        return xlsxImportService.getSheets(filePath)
+        return xlsxImportService.getSheets(slideInstance.resultFile)
     }
 
     def convertCSV2(String content)
