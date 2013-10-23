@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.rnai.Sample" %>
+<%@ page import="org.nanocan.layout.Sample" %>
 <!doctype html>
 <html>
 <head>
@@ -18,6 +18,10 @@
                 <g:render template="/templates/navmenu"></g:render>
         <li><g:link class="create" action="create"><g:message code="default.new.label"
                                                               args="[entityName]"/></g:link></li>
+        <li><g:link class="list" action="list"><g:message code="default.list.label"
+                                                                          args="[entityName]"/></g:link></li>
+        <li><g:link class="list" action="listControls"><g:message code="default.listControls.label"
+                                                                      args="[entityName]" default="Controls"/></g:link></li>
             </ul>
         </div>
     </div>
@@ -37,8 +41,8 @@
 
             <g:sortableColumn property="type" title="${message(code: 'sample.type.label', default: 'Type')}"/>
 
-            <g:sortableColumn property="targetGene"
-                              title="${message(code: 'sample.targetGene.label', default: 'Target Gene')}"/>
+            <g:sortableColumn property="target"
+                              title="${message(code: 'sample.target.label', default: 'Target')}"/>
 
             <g:sortableColumn property="color" title="${message(code: 'sample.color.label', default: 'Color')}"/>
 
@@ -53,7 +57,7 @@
 
                 <td>${fieldValue(bean: sampleInstance, field: "type")}</td>
 
-                <td>${fieldValue(bean: sampleInstance, field: "targetGene")}</td>
+                <td>${fieldValue(bean: sampleInstance, field: "target")}</td>
 
                 <td><div id="colorPickDiv" style="float:left; background-color: ${sampleInstance?.color}; border: 1px solid; width:25px; height:25px;"/></td>
 

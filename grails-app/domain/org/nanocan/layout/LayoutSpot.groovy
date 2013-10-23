@@ -11,7 +11,7 @@ class LayoutSpot implements Comparable{
     Treatment treatment
     NumberOfCellsSeeded numberOfCellsSeeded
     WellLayout wellLayout
-    String replicate
+    int replicate
 
     int block
     int col
@@ -21,7 +21,6 @@ class LayoutSpot implements Comparable{
     SlideLayout layout
 
     static constraints = {
-        replicate nullable: true
         wellLayout nullable: true
         numberOfCellsSeeded nullable: true
         cellLine nullable:  true

@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.layout.CellLine" %>
+<%@ page import="org.nanocan.layout.CellLine" %>
 <!doctype html>
 <html>
 <head>

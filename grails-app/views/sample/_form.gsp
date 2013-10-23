@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.rnai.Sample" %>
+<%@ page import="org.nanocan.layout.Sample" %>
 
 <head>
     <r:require module="colorPicker"/>
@@ -40,12 +40,28 @@
               valueMessagePrefix="sample.type" noSelection="['': '']"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: sampleInstance, field: 'targetGene', 'error')} ">
-    <label for="targetGene">
-        <g:message code="sample.targetGene.label" default="Target Gene"/>
+<div class="fieldcontain ${hasErrors(bean: sampleInstance, field: 'target', 'error')} ">
+    <label for="target">
+        <g:message code="sample.target.label" default="Target"/>
 
     </label>
-    <g:textField name="targetGene" value="${sampleInstance?.targetGene}"/>
+    <g:textField name="target" value="${sampleInstance?.target}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: sampleInstance, field: 'control', 'error')} ">
+    <label for="control">
+        <g:message code="sample.control.label" default="Control" />
+
+    </label>
+    <g:checkBox name="control" value="${sampleInstance?.control}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: sampleInstance, field: 'controlType', 'error')} ">
+    <label for="controlType">
+        <g:message code="sample.controlType.label" default="Control Type" />
+
+    </label>
+    <g:select name="controlType" from="${sampleInstance.constraints.controlType.inList}" value="${sampleInstance?.controlType}" valueMessagePrefix="sample.controlType" noSelection="['': '']"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: sampleInstance, field: 'color', 'error')} ">

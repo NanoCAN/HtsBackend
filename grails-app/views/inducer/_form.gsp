@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.layout.Inducer" %>
+<%@ page import="org.nanocan.layout.Inducer" %>
 
 <head>
     <r:require module="colorPicker"/>

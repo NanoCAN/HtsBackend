@@ -9,7 +9,6 @@ class WellLayout implements Comparable{
     CellLine cellLine
     Inducer inducer
     Treatment treatment
-    SpotType spotType
     Sample sample
 
     static belongsTo = [plateLayout: PlateLayout]
@@ -21,8 +20,9 @@ class WellLayout implements Comparable{
         treatment nullable: true
         numberOfCellsSeeded nullable: true
         sample nullable: true
-        spotType nullable: true
     }
+
+    static embedded = ['numberOfCellsSeeded', 'cellLine', 'inducer', 'treatment', 'sample']
 
     String toString(){
         plateLayout.toString() + col + row

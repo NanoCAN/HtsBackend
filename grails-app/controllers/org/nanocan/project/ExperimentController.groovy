@@ -21,15 +21,6 @@ class ExperimentController {
 
     def create() {
 
-        if (params.backParams) {
-            println params.backParams
-            def paramsMap = [:]
-            params.remove("backParams").substring(1).findAll(/([^&=]+)=([^&]+)/) { full, name, value ->  paramsMap[name] = value }
-            flash.backParams = paramsMap
-        }
-        if (params.backController) flash.backController = params.remove("backController")
-        if (params.backAction) flash.backAction = params.remove("backAction")
-
         [experimentInstance: new Experiment(params)]
     }
 

@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.layout.Treatment" %>
+<%@ page import="org.nanocan.layout.Treatment" %>
 
 <head>
     <r:require module="colorPicker"/>

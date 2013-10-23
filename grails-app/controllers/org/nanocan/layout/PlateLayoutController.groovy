@@ -11,6 +11,7 @@ class PlateLayoutController {
     def plateLayoutService
     def progressService
     def experimentService
+    def springSecurityService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -82,6 +83,10 @@ class PlateLayoutController {
     }
 
     def save() {
+
+        params.createdBy = springSecurityService.currentUser
+        params.lastUpdatedBy = springSecurityService.currentUser
+
         def plateLayoutInstance = new PlateLayout(params)
         if (!plateLayoutInstance.save(flush: true)) {
             render(view: "create", model: [plateLayoutInstance: plateLayoutInstance])
@@ -147,6 +152,7 @@ class PlateLayoutController {
                 return
             }
         }
+        params.lastUpdatedBy = springSecurityService.currentUser
 
         plateLayoutInstance.properties = params
 

@@ -57,27 +57,6 @@
                         </li>
                         </g:if>
 
-                        <g:if test="${projectInstance?.layouts}">
-                            <li class="fieldcontain">
-                                <span id="layouts-label" class="property-label"><g:message code="project.layouts.label" default="Layouts" /></span>
-
-                                <g:each in="${projectInstance.layouts}" var="l">
-                                    <span class="property-value" aria-labelledby="layouts-label"><g:link controller="slideLayout" action="show" id="${l.id}">${l?.encodeAsHTML()}</g:link></span>
-                                </g:each>
-
-                            </li>
-                        </g:if>
-
-                        <g:if test="${projectInstance?.slides}">
-                        <li class="fieldcontain">
-                            <span id="slides-label" class="property-label"><g:message code="project.slides.label" default="Slides" /></span>
-
-                                <g:each in="${projectInstance.slides}" var="s">
-                                <span class="property-value" aria-labelledby="slides-label"><g:link controller="slide" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></span>
-                                </g:each>
-
-                        </li>
-                        </g:if>
 
                     </ol>
             </div>

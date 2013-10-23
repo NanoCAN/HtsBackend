@@ -16,7 +16,7 @@ class Experiment implements Serializable{
     Person createdBy
     Person lastUpdatedBy
 
-    static hasMany = [layouts: SlideLayout, plateLayouts: PlateLayout]
+    static hasMany = [slideLayouts: SlideLayout, plateLayouts: PlateLayout]
     static belongsTo = [project: Project]
 
     static constraints = {

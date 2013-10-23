@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.layout.Inducer" %>
+<%@ page import="org.nanocan.layout.Inducer" %>
 <!doctype html>
 <html>
 <head>

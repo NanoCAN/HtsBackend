@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.layout.Inducer" %>
+<%@ page import="org.nanocan.layout.Inducer" %>
 <!doctype html>
 <html>
 <head>
@@ -70,7 +70,9 @@
                 <span id="color-label" class="property-label"><g:message code="inducer.color.label"
                                                                          default="Color"/></span>
 
-                <span class="property-value" aria-labelledby="color-label"><div id="colorPickDiv" style="float:right; background-color: ${lysisBufferInstance?.color}; border: 1px solid; width:25px; height:25px;"/></span>
+                <span style="width: 25px;" class="property-value" aria-labelledby="color-label">
+                    <div id="colorPickDiv" style="float:right; background-color: ${inducerInstance?.color}; border: 1px solid; width:25px; height:25px;"/>
+                </span>
 
             </li>
         </g:if>

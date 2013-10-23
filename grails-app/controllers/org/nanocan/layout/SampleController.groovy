@@ -8,6 +8,13 @@ class SampleController {
 
     def scaffold = true
 
+    def listControls(){
+
+        def controls = Sample.findAllByControl(true)
+
+        render(view: "list", model : [sampleInstanceList: controls, sampleInstanceTotal: controls.size() ])
+    }
+
     def ajaxSampleFinder = {
         def samplesFound = Sample.withCriteria {
             and{

@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e2256d8d-47e2-494f-bc49-7d0b3d091493" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HTSbackend.iml" afterPath="$PROJECT_DIR$/HTSbackend.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/domain/org/nanocan/layout/Sample.groovy" afterPath="$PROJECT_DIR$/grails-app/domain/org/nanocan/layout/Sample.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/services/org/nanocan/io/FileImportService.groovy" afterPath="$PROJECT_DIR$/grails-app/services/org/nanocan/io/FileImportService.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/services/org/nanocan/io/XlsxImportService.groovy" afterPath="$PROJECT_DIR$/grails-app/services/org/nanocan/io/XlsxImportService.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/domain/org/nanocan/project/Project.groovy" afterPath="$PROJECT_DIR$/grails-app/domain/org/nanocan/project/Project.groovy" />
     </list>
     <ignored path="HTSbackend.iws" />
     <ignored path=".idea/workspace.xml" />

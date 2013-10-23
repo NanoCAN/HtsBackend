@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.layout.NumberOfCellsSeeded" %>
+<%@ page import="org.nanocan.layout.NumberOfCellsSeeded" %>
 
 <head>
     <r:require module="colorPicker"/>

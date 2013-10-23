@@ -1,5 +1,7 @@
 package org.nanocan.layout
 
+import org.nanocan.security.Person
+
 class PlateLayout implements Serializable{
 
     String name
@@ -8,11 +10,16 @@ class PlateLayout implements Serializable{
     int cols
     int rows
 
-    Boolean controlPlate = false
+    Date dateCreated
+    Date lastUpdated
+
+    Person createdBy
+    Person lastUpdatedBy
+
+    boolean controlPlate
 
     static constraints = {
-        controlPlate nullable: true
-        name blank: false, unique:  true
+        name blank: false, unique:  true, nullable: false
         format inList: ["96-well", "384-well"], blank: false, editable: false
     }
 

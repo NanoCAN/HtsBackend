@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.project.Experiment" %>
+<%@ page import="org.nanocan.project.Project; org.nanocan.project.Experiment" %>
 
 
 
@@ -31,7 +31,7 @@
 		<g:message code="experiment.project.label" default="Project" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="project" name="project.id" from="${org.nanocan.rppa.project.Project.list()}" optionKey="id" required="" value="${experimentInstance?.project?.id}" class="many-to-one"/>
+	<g:select id="project" name="project.id" from="${Project.list()}" optionKey="id" required="" value="${experimentInstance?.project?.id}" class="many-to-one"/>
 </div>
 
 

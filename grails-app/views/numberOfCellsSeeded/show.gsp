@@ -1,5 +1,5 @@
 
-<%@ page import="org.nanocan.rppa.layout.NumberOfCellsSeeded" %>
+<%@ page import="org.nanocan.layout.NumberOfCellsSeeded" %>
 <!doctype html>
 <html>
 	<head>

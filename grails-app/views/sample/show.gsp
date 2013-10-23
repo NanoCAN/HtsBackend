@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.rnai.Sample" %>
+<%@ page import="org.nanocan.layout.Sample" %>
 <!doctype html>
 <html>
 <head>
@@ -52,13 +52,22 @@
             </li>
         </g:if>
 
-        <g:if test="${sampleInstance?.targetGene}">
+        <g:if test="${sampleInstance?.target}">
             <li class="fieldcontain">
-                <span id="targetGene-label" class="property-label"><g:message code="sample.targetGene.label"
-                                                                              default="Target Gene"/></span>
+                <span id="target-label" class="property-label"><g:message code="sample.target.label"
+                                                                              default="Target"/></span>
 
-                <span class="property-value" aria-labelledby="targetGene-label"><g:fieldValue bean="${sampleInstance}"
-                                                                                              field="targetGene"/></span>
+                <span class="property-value" aria-labelledby="target-label"><g:fieldValue bean="${sampleInstance}"
+                                                                                              field="target"/></span>
+
+            </li>
+        </g:if>
+
+        <g:if test="${sampleInstance?.control}">
+            <li class="fieldcontain">
+                <span id="controlType-label" class="property-label"><g:message code="sample.controlType.label" default="Control Type" /></span>
+
+                <span class="property-value" aria-labelledby="controlType-label"><g:fieldValue bean="${sampleInstance}" field="controlType"/></span>
 
             </li>
         </g:if>
