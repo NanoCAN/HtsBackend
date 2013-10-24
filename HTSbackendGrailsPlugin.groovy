@@ -10,8 +10,8 @@ class HtsBackendGrailsPlugin {
 
     // TODO Fill in these fields
     def title = "HTS backend Plugin" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def author = "Markus List"
+    def authorEmail = "mlist@health.sdu.dk"
     def description = '''\
 Brief summary/description of the plugin.
 '''
