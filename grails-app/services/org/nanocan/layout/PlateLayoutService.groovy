@@ -19,14 +19,13 @@ class PlateLayoutService {
 
         //get config
         int batchSize = grailsApplication.config.jdbc.batchSize?:96
-        boolean useGroovySql = false //grailsApplication.config.jdbc.groovySql.toString().toBoolean()
+        boolean useGroovySql = grailsApplication.config.jdbc.groovySql.toString().toBoolean()
 
         log.debug "using groovy sql instead of GORM:" + useGroovySql
 
         def insertLoop = { stmt ->
             for (int col = 1; col <= plateLayout.cols; col++) {
                 for (int row = 1; row <= plateLayout.rows; row++) {
-                    println "trying to create ${row} ${col} in ${plateLayout}"
 
                     if (useGroovySql) stmt.addBatch(0, col, plateLayout.id, row)
                     else new WellLayout(col: col, row: row, plateLayout: plateLayout, numberOfCellsSeeded: null, inducer: null, treatment: null, sample:  null).save(flush: true, failOnError: true)

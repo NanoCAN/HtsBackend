@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.security.Person" %>
+<%@ page import="org.nanocan.security.Person" %>
 <!doctype html>
 <html>
 <head>

@@ -22,8 +22,6 @@ class WellLayout implements Comparable{
         sample nullable: true
     }
 
-    static embedded = ['numberOfCellsSeeded', 'cellLine', 'inducer', 'treatment', 'sample']
-
     String toString(){
         plateLayout.toString() + col + row
     }
