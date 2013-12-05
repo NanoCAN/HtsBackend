@@ -1,6 +1,5 @@
 package org.nanocan.plates
 
-import org.nanocan.plates.WellReadout
 import org.springframework.dao.DataIntegrityViolationException
 
 class WellReadoutController {
