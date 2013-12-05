@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.org.nanocan.layout.NumberOfCellsSeeded; org.norg.nanocan.layout.rppa.layout.Treaorg.nanocan.layout org.nanocan.rpporg.nanocan.layoutut.SpotType; ororg.nanocan.layoutcan.rppa.layout.org.nanocan.layoutr; org.nanocan.rppaorg.nanocan.layoutt.Dilution; org.nanocan.rppa.layout.LysisBuffer; org.nanocan.rppa.layout.CellLine" %>
+<%@ page import="org.nanocan.layout.NumberOfCellsSeeded; org.nanocan.layout.Treatment; org.nanocan.layout.SpotType; org.nanocan.layout.Inducer; org.nanocan.layout.Dilution; org.nanocan.layout.LysisBuffer; org.nanocan.layout.CellLine" %>
 <head>
     <r:require module="colorPicker"/>
     <style>

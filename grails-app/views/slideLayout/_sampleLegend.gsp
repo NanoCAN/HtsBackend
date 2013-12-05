@@ -1,4 +1,3 @@
-<%@ page import="org.nanocan.rppa.org.nanocan.layout.SpotType; org.norg.nanocan.layout.rppa.layout.Inorg.nanocan.layout org.nanocan.rpporg.nanocan.layoutut.Dilution; org.naorg.nanocan.layoutrppa.layout.LysisBuffer; org.nanocan.rppa.layout.CellLine" %>
 <html>
 <head>
     <style>

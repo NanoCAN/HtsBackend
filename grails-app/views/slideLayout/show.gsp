@@ -1,5 +1,5 @@
 
-<%@ page import="org.nanocan.rppa.scanner.Slide; org.nanocan.rppa.org.nanocan.layout.SlideLayout" %>
+<%@ page import="org.nanocan.rppa.scanner.Slide; org.nanocan.layout.SlideLayout" %>
 <!doctype html>
 <html>
 	<head>

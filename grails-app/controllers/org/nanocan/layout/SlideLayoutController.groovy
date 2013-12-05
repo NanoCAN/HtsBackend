@@ -79,8 +79,9 @@ class SlideLayoutController {
 
     def sampleSpotTable(){
         def slideLayoutInstance = SlideLayout.get(params.id)
+        def spots = slideLayoutInstance.sampleSpots
 
-        [slideLayout:  slideLayoutInstance, spots: slideLayoutInstance.sampleSpots, sampleProperty: params.sampleProperty]
+        [slideLayout:  slideLayoutInstance, spots: spots, sampleProperty: params.sampleProperty]
     }
 	
 	

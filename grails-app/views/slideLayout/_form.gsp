@@ -1,6 +1,4 @@
-<%@ page import="org.nanocan.rppa.org.nanocan.layout.SlideLayout" %>
-
-
+<%@ page import="org.nanocan.layout.SlideLayout" %>
 
 <div class="fieldcontain ${hasErrors(bean: slideLayoutInstance, field: 'title', 'error')} ">
 	<label for="title">

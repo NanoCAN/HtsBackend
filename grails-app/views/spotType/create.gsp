@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.org.nanocan.layout.SpotType" %>
+<%@ page import="org.nanocan.layout.SpotType" %>
 <!doctype html>
 <html>
 	<head>
