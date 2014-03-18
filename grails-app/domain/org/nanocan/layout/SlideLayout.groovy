@@ -28,7 +28,7 @@ class SlideLayout implements Serializable{
         numberOfBlocks min:  1
         blocksPerRow nullable: true, min: 1
         depositionPattern validator: {
-            if(!(it ==~ /\[([1-9],)+[1-9]\]/)) return ("default.deposition.pattern.mismatch")
+            if(!(it ==~ /\[([1-9]+,)*+[1-9]+\]/)) return ("default.deposition.pattern.mismatch")
         }
     }
     

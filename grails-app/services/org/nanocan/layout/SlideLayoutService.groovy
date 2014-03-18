@@ -29,8 +29,8 @@ class SlideLayoutService {
             for (int block = 1; block <= slideLayout.numberOfBlocks; block++) {
                 for (int col = 1; col <= slideLayout.columnsPerBlock; col++) {
                     for (int row = 1; row <= slideLayout.rowsPerBlock; row++) {
-                        if (useGroovySql) stmt.addBatch(0, block, null, col, null, null, slideLayout.id, null, row, null, null)
-                        else new LayoutSpot(block: block, col: col, row: row, layout: slideLayout).save()
+                        if (useGroovySql) stmt.addBatch(0, block, null, col, null, null, slideLayout.id, null, row, null, null, 1, null)
+                        else new LayoutSpot(block: block, col: col, row: row, layout: slideLayout, replicate:1).save()
                     }
                 }
             }
@@ -40,7 +40,7 @@ class SlideLayoutService {
             //create an sql instance for direct inserts via groovy sql
             def sql = Sql.newInstance(dataSourceUnproxied)
 
-            sql.withBatch(batchSize, 'insert into layout_spot (version, block, cell_line_id, col, dilution_factor_id, inducer_id, layout_id, lysis_buffer_id, row, sample_id, spot_type_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'){ stmt ->
+            sql.withBatch(batchSize, 'insert into layout_spot (version, block, cell_line_id, col, dilution_factor_id, inducer_id, layout_id, lysis_buffer_id, row, sample_id, spot_type_id, replicate, well_layout_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'){ stmt ->
                 insertLoop(stmt)
             }
             //clean up
@@ -71,8 +71,7 @@ class SlideLayoutService {
             if (value != "") {
                 def spot = LayoutSpot.get(key as Long)
 
-                def classPrefix = "org.nanocan.rppa.layout."
-                if(className == "sample")  classPrefix = "org.nanocan.rppa.rnai."
+                def classPrefix = "org.nanocan.layout."
 
                 if (value as Long == -1) spot.properties[spotProp] = null
                 else spot.properties[spotProp] = grailsApplication.getDomainClass(classPrefix + className.toString().capitalize()).clazz.get(value as Long)

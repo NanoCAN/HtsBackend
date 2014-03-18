@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.scanner.ResultFileConfig" %>
+<%@ page import="org.nanocan.file.ResultFileConfig" %>
 
 <div class="fieldcontain ${hasErrors(bean: resultFileConfigInstance, field: 'name', 'error')} ">
     <label for="name">
@@ -8,12 +8,18 @@
     <g:textField name="name" value="${resultFileConfigInstance?.name}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: resultFileConfigInstance, field: 'blockCol', 'error')} ">
-    <label for="blockCol">
-        <g:message code="resultFileConfig.blockCol.label" default="Block Col"/>
-
+<div class="fieldcontain">
+    <label for="gridType">
+        Select grid type
     </label>
-    <g:textField name="blockCol" value="${resultFileConfigInstance?.blockCol}"/>
+
+    <g:select from="['Blocks', 'MainCol/MainRow']" name="gridType" value="${resultFileConfigInstance.blockCol?"Blocks":"MainCol/MainRow"}" onchange="${remoteFunction(action: 'renderGridTypeSelector',
+          update: "gridTypeDiv",
+          params: '\'gridType=\' + this.value')}"/>
+</div>
+
+<div id="gridTypeDiv">
+    <g:include action="renderGridTypeSelector" params="${['gridType':resultFileConfigInstance.blockCol?'Blocks':'MainCol/MainRow']}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: resultFileConfigInstance, field: 'columnCol', 'error')} ">

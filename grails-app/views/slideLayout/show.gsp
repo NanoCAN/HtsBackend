@@ -12,7 +12,8 @@
         <r:script>$(function() {
             $("#accordion").accordion({
                 collapsible:true,
-                autoHeight: false
+                autoHeight: false,
+                active: 3
             });
 
         });</r:script>
@@ -125,7 +126,7 @@
                 <h3><a href="#">Slides using this layout</a></h3>
                 <div>
                     <ul>
-                        <g:each in="${Slide.findByLayout(slideLayoutInstance)}" var="slide">
+                        <g:each in="${Slide.findAllByLayout(slideLayoutInstance)}" var="slide">
                             <li>
                                 <g:link controller="slide" action="show" id="${slide.id}">${slide}</g:link>
                             </li>
@@ -134,6 +135,7 @@
                 </div>
                 <h3><a href="#">Spot Properties</a></h3>
                 <div>
+                    <g:form name="uploadSheet" url="['action':'importSamplesFromFile']" enctype="multipart/form-data">
                     <div>
                             Select a property: <g:select name="sampleProperty" optionKey="key" optionValue="value" value="${sampleProperty}"
                                                          from="${["cellLine":"CellLine", "dilutionFactor":"Dilution Factor", "inducer":"Inducer", "lysisBuffer":"Lysis Buffer", "spotType": "Spot Type", "treatment":"Treatment", "numberOfCellsSeeded":"Number of cells seeded", "sample":"Sample"]}"
@@ -161,6 +163,14 @@
                                                    else ${remoteFunction(update: 'spotProperties', action:'sampleSpotTable', id: slideLayoutInstance?.id, params: "\'nobanner=true&sampleProperty=\'+selectValue")};"
                         />
                     </div>
+                    <div>
+                            <input type="hidden" name="id" value="${slideLayoutInstance.id}"/>
+                            <input type="hidden" name="nobanner" value="true"/>
+                            <br/>Upload layout file:
+                            <input type="file" id="resultFile.input" name="resultFileInput"/>
+                            <input type="submit" value="upload"/>
+                    </div>
+                    </g:form>
                     <div id="dialog-spot-confirm" title="You have unsaved changes!" style="display: none;">
                         <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>You have unsaved changes. What do you want to do?</p>
                     </div>

@@ -8,7 +8,7 @@ class ExperimentService {
     def findExperiment(doInstance) {
         return Experiment.where {
             if(doInstance instanceof SlideLayout) {
-                layouts
+                slideLayouts
                 {
                     id == doInstance.id
                 }
@@ -37,7 +37,7 @@ class ExperimentService {
             if(it instanceof Experiment) experiment = it
             else experiment = Experiment.get(it as Long)
 
-            if(doInstance instanceof SlideLayout) experiment.addToLayouts(doInstance).save(flush: true)
+            if(doInstance instanceof SlideLayout) experiment.addToSlideLayouts(doInstance).save(flush: true)
             //else if(doInstance instanceof Slide) experiment.addToSlides(doInstance).save(flush: true)
             else if(doInstance instanceof PlateLayout) experiment.addToPlateLayouts(doInstance).save(flush:true)
         }
@@ -50,7 +50,7 @@ class ExperimentService {
             if(it instanceof Experiment) experiment = it
             else experiment = Experiment.get(it as Long)
 
-            if(doInstance instanceof SlideLayout) experiment.removeFromLayouts(doInstance).save(flush: true)
+            if(doInstance instanceof SlideLayout) experiment.removeFromSlideLayouts(doInstance).save(flush: true)
             //else if(doInstance instanceof Slide) experiment.removeFromSlides(doInstance).save(flush: true)
             else if(doInstance instanceof PlateLayout) experiment.removeFromPlateLayouts(doInstance).save(flush: true)
         }

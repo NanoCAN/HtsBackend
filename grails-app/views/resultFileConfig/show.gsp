@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.scanner.ResultFileConfig" %>
+<%@ page import="org.nanocan.file.ResultFileConfig" %>
 <!doctype html>
 <html>
 <head>
@@ -49,6 +49,28 @@
 
                 <span class="property-value" aria-labelledby="blockCol-label"><g:fieldValue
                         bean="${resultFileConfigInstance}" field="blockCol"/></span>
+
+            </li>
+        </g:if>
+
+        <g:if test="${resultFileConfigInstance?.mainColCol}">
+            <li class="fieldcontain">
+                <span id="mainColCol-label" class="property-label"><g:message code="resultFileConfig.mainColCol.label"
+                                                                            default="MainCol Col"/></span>
+
+                <span class="property-value" aria-labelledby="mainColCol-label"><g:fieldValue
+                        bean="${resultFileConfigInstance}" field="mainColCol"/></span>
+
+            </li>
+        </g:if>
+
+        <g:if test="${resultFileConfigInstance?.mainRowCol}">
+            <li class="fieldcontain">
+                <span id="mainRowCol-label" class="property-label"><g:message code="resultFileConfig.blockCol.label"
+                                                                            default="MainRow Col"/></span>
+
+                <span class="property-value" aria-labelledby="mainRowCol-label"><g:fieldValue
+                        bean="${resultFileConfigInstance}" field="mainRowCol"/></span>
 
             </li>
         </g:if>

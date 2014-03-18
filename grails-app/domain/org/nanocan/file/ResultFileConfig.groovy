@@ -4,6 +4,8 @@ class ResultFileConfig {
 
     String name
 
+    String mainColCol
+    String mainRowCol
     String blockCol
     String rowCol
     String columnCol
@@ -18,7 +20,12 @@ class ResultFileConfig {
 
 
     static constraints = {
+        mainColCol nullable: true
+        mainRowCol nullable: true
         unique: "name"
+        blockCol nullable:true, validator: { val, obj ->
+            if(val && (obj.mainColCol || obj.mainRowCol)) ['cannotUseBlockColAndMainRowMainColAtTheSameTime']
+        }
     }
 
     String toString()

@@ -30,6 +30,7 @@ class LayoutSpot implements Comparable{
         sample nullable:  true
         spotType nullable:  true
         treatment nullable:  true
+        replicate nullable: true
     }
 
     static mapping = {

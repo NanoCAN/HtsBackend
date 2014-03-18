@@ -29,9 +29,8 @@ import javax.xml.parsers.SAXParserFactory
 class XlsxImportService {
 
 
-    def getSheets(resultFile){
+    def getSheets(filePath){
 
-        def filePath = resultFile.filePath
         def fileEnding = FilenameUtils.getExtension(filePath)
         def sheets = []
 

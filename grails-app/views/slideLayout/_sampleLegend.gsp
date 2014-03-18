@@ -5,13 +5,14 @@
         z-index: 10000; opacity: 0.95; top: 135px; left: 10px;
         border-color: #e6e6e6; border-bottom-width: 1px; border-style: solid;}
     </style>
-    <r:script>
+    <script type="text/javascript
+    ">
         $(function(){
             $( "#draggableLegend").draggable();
         });
-    </r:script>
+    </script>
 
-    <r:script>
+    <script type="text/javascript">
             $(document).ready(function(){
 
                $('#sampleSelection').autocomplete({
@@ -27,7 +28,7 @@
                     }
                 });
             });
-    </r:script>
+    </script>
 
 </head>
 <body>

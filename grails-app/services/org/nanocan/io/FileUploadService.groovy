@@ -23,8 +23,9 @@ class FileUploadService {
 
             def currentDate = new java.util.Date()
             long timestamp = currentDate.getTime()
-            def filePath = grailsApplication.config.upload.directory + timestamp.toString() + "_" + resultFile.originalFilename
-
+            String basePath = grailsApplication.config?.upload?.directory?:""
+            def filePath = basePath + timestamp.toString() + "_" + resultFile.originalFilename
+                                           println filePath
             resultFile.transferTo( new File(filePath) )
 
             def newResultFile = new ResultFile(fileType: type, fileName: (resultFile.originalFilename as String), filePath: filePath, dateUploaded:  currentDate as Date)
@@ -47,7 +48,7 @@ class FileUploadService {
      * Creates tiles for the imagezoom plugin and does some image processing
      * depends on having graphicsmagick on the path
      */
-    def zoomifyImage(String filePath) {
+    /*def zoomifyImage(String filePath) {
         Runtime rt = Runtime.getRuntime()
 
         //fomat path
@@ -92,7 +93,7 @@ class FileUploadService {
             log.error "There was an error during image processing. A file was not found:" + e.getMessage()
             println e.stackTrace
         }
-    }
+    }    */
 
     def makePathURLSafe(String filePath) {
         return FilenameUtils.getFullPath(filePath) + FilenameUtils.getBaseName(filePath).split("_")[0]

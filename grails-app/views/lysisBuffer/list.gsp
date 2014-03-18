@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.layout.LysisBuffer" %>
+<%@ page import="org.nanocan.layout.LysisBuffer" %>
 <!doctype html>
 <html>
 <head>

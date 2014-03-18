@@ -1,16 +1,15 @@
 <%@ page import="org.nanocan.layout.NumberOfCellsSeeded; org.nanocan.layout.Treatment; org.nanocan.layout.SpotType; org.nanocan.layout.Inducer; org.nanocan.layout.Dilution; org.nanocan.layout.LysisBuffer; org.nanocan.layout.CellLine" %>
 <head>
-    <r:require module="colorPicker"/>
     <style>
         #draggableLegend { width:250px; padding: 0.5em; background-color: #ffffff; position: fixed;
             z-index: 10000; opacity: 0.95; top: 135px; left: 190px;
             border-color: #e6e6e6; border-bottom-width: 1px; border-style: solid;}
     </style>
-    <r:script>
+    <script type="text/javascript">
         $(function(){
             $( "#draggableLegend").draggable();
         });
-    </r:script>
+    </script>
 </head>
 <body>
     <div id="draggableLegend" style="position: fixed;">
@@ -44,7 +43,7 @@
             <td>
                 <div id="colorPick${it.id}" style="background-color: ${it.color}; border: 1px solid; width:25px; height:25px;"></div>
             </td>
-            <r:script>
+            <script type="text/javascript">
                 $('#colorPick${it.id}').ColorPicker({
                     color: '${it.color}',
                     onShow: function (colpkr) {
@@ -59,20 +58,20 @@
                         $('#colorPick${it.id} div').css('backgroundColor', '#' + hex);
                     }
                 });
-            </r:script>
+            </script>
 
         </tr>
     </g:each>
     </table>
     </div>
 
-    <r:script>
+    <script type="text/javascript">
 
     function changeColor(color, name, id){
         selColor = color
         selName = name
         selId = id
     }
-    </r:script>
+    </script>
 
 </body>

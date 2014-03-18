@@ -1,5 +1,6 @@
 package org.nanocan.layout
 
+import org.codehaus.jackson.annotate.JsonIgnore
 import org.nanocan.security.Person
 
 class PlateLayout implements Serializable{
@@ -16,6 +17,7 @@ class PlateLayout implements Serializable{
     Person createdBy
     Person lastUpdatedBy
 
+    @JsonIgnore
     boolean controlPlate
 
     static constraints = {

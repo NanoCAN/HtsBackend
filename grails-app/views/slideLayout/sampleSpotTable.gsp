@@ -70,7 +70,7 @@
             });
 </script>
 
-<r:script>
+<script type="text/javascript">
 
     function updateSelectionMode(newValue)
     {
@@ -172,4 +172,4 @@
         return "If you leave without saving, your changes will be discarded! Are you sure?";
     }
 
-</r:script>
+</script>

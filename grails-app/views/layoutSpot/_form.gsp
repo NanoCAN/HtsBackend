@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.rppa.org.nanocan.layout.LayoutSpot" %>
+<%@ page import="org.nanocan.layout.LayoutSpot" %>
 
 
 

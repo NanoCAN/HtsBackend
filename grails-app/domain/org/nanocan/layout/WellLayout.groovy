@@ -10,11 +10,13 @@ class WellLayout implements Comparable{
     Inducer inducer
     Treatment treatment
     Sample sample
+    SpotType spotType
 
     static belongsTo = [plateLayout: PlateLayout]
 
 
     static constraints = {
+        spotType nullable: true
         cellLine nullable: true
         inducer nullable:  true
         treatment nullable: true

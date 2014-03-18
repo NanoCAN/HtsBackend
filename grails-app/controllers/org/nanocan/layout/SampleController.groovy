@@ -23,7 +23,7 @@ class SampleController {
                 or
                 {
                     ilike 'name', params.term + '%'
-                    ilike 'targetGene', params.term + '%'
+                    ilike 'target', params.term + '%'
                 }
             }
         }
@@ -32,7 +32,7 @@ class SampleController {
             or
             {
                 ilike 'name', params.term + '%'
-                ilike 'targetGene', params.term + '%'
+                ilike 'target', params.term + '%'
                 identifiers{
                    or
                    {

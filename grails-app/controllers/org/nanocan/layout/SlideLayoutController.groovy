@@ -4,6 +4,8 @@ import org.springframework.dao.DataIntegrityViolationException
 import grails.plugins.springsecurity.Secured
 import org.nanocan.project.Experiment
 import org.nanocan.project.Project
+import org.springframework.web.multipart.MultipartHttpServletRequest
+import org.springframework.web.multipart.commons.CommonsMultipartFile
 
 @Secured(['ROLE_USER'])
 class SlideLayoutController {
@@ -14,6 +16,7 @@ class SlideLayoutController {
     def experimentService
     def progressService
 	def clipboardParsingService
+    def layoutImportService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -83,6 +86,16 @@ class SlideLayoutController {
 
         [slideLayout:  slideLayoutInstance, spots: spots, sampleProperty: params.sampleProperty]
     }
+
+    def importSamplesFromFile(){
+
+        def slideLayoutInstance = SlideLayout.get(params.id)
+
+        layoutImportService.importSamplesFromFile(request, slideLayoutInstance)
+        slideLayoutInstance.refresh()
+
+        render(view:"show", model: [slideLayoutInstance: slideLayoutInstance, experiments: experimentService.findExperiment(slideLayoutInstance)])
+    }
 	
 	
 	def parseClipboardData(){
@@ -126,6 +139,7 @@ class SlideLayoutController {
 
         params.createdBy = springSecurityService.currentUser
         params.lastUpdatedBy = springSecurityService.currentUser
+        println springSecurityService.currentUser
 
         def slideLayoutInstance = new SlideLayout(params)
 
@@ -220,11 +234,11 @@ class SlideLayoutController {
             return
         }
 
-        else if(Slide.findByLayout(slideLayoutInstance)){
+/*        else if(Slide.findByLayout(slideLayoutInstance)){
             flash.message = "Cannot delete layout while there is still a slide using it."
             redirect(action: "show", id: params.id)
             return
-        }
+        }*/
 
         try {
             experimentService.updateExperiments(slideLayoutInstance, [])
