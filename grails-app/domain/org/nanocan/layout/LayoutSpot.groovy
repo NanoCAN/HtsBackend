@@ -1,5 +1,7 @@
 package org.nanocan.layout
 
+import org.nanocan.plates.Plate
+
 class LayoutSpot implements Comparable{
 
     CellLine cellLine
@@ -12,6 +14,7 @@ class LayoutSpot implements Comparable{
     NumberOfCellsSeeded numberOfCellsSeeded
     WellLayout wellLayout
     int replicate
+    Plate plate
 
     int block
     int col
@@ -21,6 +24,7 @@ class LayoutSpot implements Comparable{
     SlideLayout layout
 
     static constraints = {
+        plate nullable: true
         wellLayout nullable: true
         numberOfCellsSeeded nullable: true
         cellLine nullable:  true

@@ -1,5 +1,6 @@
 package org.nanocan.layout
 
+import org.nanocan.plates.Plate
 import org.nanocan.security.Person
 
 class SlideLayout implements Serializable{
@@ -16,12 +17,16 @@ class SlideLayout implements Serializable{
     int numberOfBlocks
     Integer blocksPerRow
     String depositionPattern
+    List sourcePlates
+    ExtractionHead extractionHead
 
-    static hasMany = [sampleSpots: LayoutSpot]
+    static hasMany = [sampleSpots: LayoutSpot, sourcePlates: Plate]
 
     SortedSet sampleSpots
 
     static constraints = {
+        extractionHead nullable:true
+        sourcePlates nullable: true
         title unique: true, blank: false
         columnsPerBlock min:  1
         rowsPerBlock min:  1

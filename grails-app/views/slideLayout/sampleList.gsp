@@ -1,4 +1,4 @@
-<r:script>
+<script type="text/javascript">
 
  var changeSampleFromSampleList = function(color, id, name)
  {
@@ -10,7 +10,7 @@
      selName = name;
      selId = id;
  }
-</r:script>
+</script>
 
 <table>
 

@@ -2,8 +2,8 @@ package org.nanocan.io
 
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
-import org.nanocan.errors.XlsxToReadoutException
 import org.nanocan.file.ResultFile
+import org.nanocan.plates.Plate
 import org.nanocan.plates.Readout
 import org.nanocan.plates.WellReadout
 import org.springframework.web.multipart.MultipartFile

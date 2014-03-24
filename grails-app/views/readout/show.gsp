@@ -1,5 +1,5 @@
 
-<%@ page import="org.nanocan.savanah.plates.Readout" %>
+<%@ page import="org.nanocan.plates.Readout" %>
 <!doctype html>
 <html>
 	<head>
@@ -91,6 +91,8 @@
                 </g:if>
 			
 			</ol>
+
+            <g:include action="heatmap" id="${readoutInstance?.id}"/>
 			<g:form>
 				<fieldset class="buttons">
 					<g:hiddenField name="id" value="${readoutInstance?.id}" />

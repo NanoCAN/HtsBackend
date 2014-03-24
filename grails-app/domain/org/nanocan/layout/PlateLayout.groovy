@@ -1,6 +1,7 @@
 package org.nanocan.layout
 
 import org.codehaus.jackson.annotate.JsonIgnore
+import org.nanocan.plates.Plate
 import org.nanocan.security.Person
 
 class PlateLayout implements Serializable{
@@ -17,15 +18,12 @@ class PlateLayout implements Serializable{
     Person createdBy
     Person lastUpdatedBy
 
-    @JsonIgnore
-    boolean controlPlate
-
     static constraints = {
         name blank: false, unique:  true, nullable: false
         format inList: ["96-well", "384-well"], blank: false, editable: false
     }
 
-    static hasMany = [wells: WellLayout]
+    static hasMany = [wells: WellLayout, plates: Plate]
     SortedSet wells
 
     def beforeInsert = {

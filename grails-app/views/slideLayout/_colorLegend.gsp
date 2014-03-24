@@ -1,8 +1,8 @@
 <%@ page import="org.nanocan.layout.NumberOfCellsSeeded; org.nanocan.layout.Treatment; org.nanocan.layout.SpotType; org.nanocan.layout.Inducer; org.nanocan.layout.Dilution; org.nanocan.layout.LysisBuffer; org.nanocan.layout.CellLine" %>
 <head>
     <style>
-        #draggableLegend { width:250px; padding: 0.5em; background-color: #ffffff; position: fixed;
-            z-index: 10000; opacity: 0.95; top: 135px; left: 190px;
+        #draggableLegend { width:250px; height: 400px; overflow-y:auto; padding: 0.5em; background-color: #ffffff; position: fixed;
+            z-index: 10000; opacity: 0.95; top: 135px; right: 190px;
             border-color: #e6e6e6; border-bottom-width: 1px; border-style: solid;}
     </style>
     <script type="text/javascript">

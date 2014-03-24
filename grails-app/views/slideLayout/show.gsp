@@ -1,5 +1,5 @@
 
-<%@ page import="org.nanocan.rppa.scanner.Slide; org.nanocan.layout.SlideLayout" %>
+<%@ page import="org.nanocan.plates.Readout; org.nanocan.rppa.scanner.Slide; org.nanocan.layout.SlideLayout" %>
 <!doctype html>
 <html>
 	<head>
@@ -133,9 +133,29 @@
                         </g:each>
                     </ul>
                 </div>
+                <g:set var="plates" value="${slideLayoutInstance.sourcePlates}"/>
+                <g:if test="${plates}">
+                <h3><a href="#">Created using the following plates</a></h3>
+                <div>
+                    <ul>
+                        <g:each in="${plates}" var="plate">
+                            <li>
+                                <g:link controller="plate" action="show" id="${plate.id}">${plate}</g:link><br/>
+                                Readouts:
+                                <ul>
+                                    <g:each in="${Readout.findAllByPlate(plate)}" var="readout">
+                                        <li>
+                                            <g:link controller="readout" action="show" id="${readout.id}">${readout}</g:link>
+                                        </li>
+                                    </g:each>
+                                </ul>
+                            </li>
+                        </g:each>
+                    </ul>
+                </div>
+                </g:if>
                 <h3><a href="#">Spot Properties</a></h3>
                 <div>
-                    <g:form name="uploadSheet" url="['action':'importSamplesFromFile']" enctype="multipart/form-data">
                     <div>
                             Select a property: <g:select name="sampleProperty" optionKey="key" optionValue="value" value="${sampleProperty}"
                                                          from="${["cellLine":"CellLine", "dilutionFactor":"Dilution Factor", "inducer":"Inducer", "lysisBuffer":"Lysis Buffer", "spotType": "Spot Type", "treatment":"Treatment", "numberOfCellsSeeded":"Number of cells seeded", "sample":"Sample"]}"
@@ -163,14 +183,6 @@
                                                    else ${remoteFunction(update: 'spotProperties', action:'sampleSpotTable', id: slideLayoutInstance?.id, params: "\'nobanner=true&sampleProperty=\'+selectValue")};"
                         />
                     </div>
-                    <div>
-                            <input type="hidden" name="id" value="${slideLayoutInstance.id}"/>
-                            <input type="hidden" name="nobanner" value="true"/>
-                            <br/>Upload layout file:
-                            <input type="file" id="resultFile.input" name="resultFileInput"/>
-                            <input type="submit" value="upload"/>
-                    </div>
-                    </g:form>
                     <div id="dialog-spot-confirm" title="You have unsaved changes!" style="display: none;">
                         <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>You have unsaved changes. What do you want to do?</p>
                     </div>

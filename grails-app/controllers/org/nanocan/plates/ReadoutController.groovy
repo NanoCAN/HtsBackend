@@ -1,6 +1,6 @@
 package org.nanocan.plates
 
-import org.nanocan.plates.Readout
+import org.nanocan.file.PlateResultFileConfig
 import org.springframework.dao.DataIntegrityViolationException
 import org.apache.commons.io.FilenameUtils
 import org.springframework.security.access.annotation.Secured
@@ -120,6 +120,10 @@ class ReadoutController {
         }
     }
 
+    def heatmap(){
+        [readoutId: params.id]
+    }
+
     /* Add and delete spots, import from result file */
     def addReadoutData() {
         def readoutInstance = Readout.get(params.id)
@@ -132,7 +136,7 @@ class ReadoutController {
             [index: index++, name: it]
         }
 
-        [readoutInstance: readoutInstance, configs: ResultFileConfig.list(), fileEnding: fileEnding, sheets: sheets]
+        [readoutInstance: readoutInstance, configs: PlateResultFileConfig.list(), fileEnding: fileEnding, sheets: sheets]
     }
 
     final ArrayList<String> readoutProperties = ["wellPosition", "row", "column", "measuredValue"]
@@ -161,7 +165,7 @@ class ReadoutController {
         def resultFileCfg
 
         if(!params.config.equals("")){
-            resultFileCfg = ResultFileConfig.get(params.config)
+            resultFileCfg = PlateResultFileConfig.get(params.config)
             readoutInstance.lastConfig = resultFileCfg
             readoutInstance.save()
         }

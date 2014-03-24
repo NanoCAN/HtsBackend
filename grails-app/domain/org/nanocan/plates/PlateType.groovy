@@ -1,6 +1,6 @@
 package org.nanocan.plates
 
-class PlateType {
+class PlateType implements Serializable{
 
     boolean ultraLowAdhesion
     String wellShape

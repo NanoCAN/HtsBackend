@@ -25,6 +25,9 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         runtime 'net.sourceforge.jtds:jtds:1.3.1'
         // runtime 'mysql:mysql-connector-java:5.1.21'
+        //jackson JSON parser
+        compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
+        compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
 
         //xls file support
         compile (group:'org.apache.poi', name:'poi', version:'3.9')
@@ -38,6 +41,7 @@ grails.project.dependency.resolution = {
               ":rest-client-builder:1.0.3") {
             export = false
         }
+        compile ":jquery-ui:1.10.3"
 
         compile ":jprogress:0.2"
         compile ":spring-security-core:1.2.7.3"

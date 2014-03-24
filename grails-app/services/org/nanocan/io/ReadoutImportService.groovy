@@ -39,11 +39,11 @@ class ReadoutImportService {
                 newWellReadout.measuredValue = Double.valueOf(currentLine[columnMap.measuredValue])
 
                 //compute well position if necessary
-                if(newWellReadout.col == null && newWellReadout.row == null && currentLine[columnMap.wellPosition])
+                if(columnMap.wellPosition != null)
                 {
                     def wellPosition = currentLine[columnMap.wellPosition]
-                    newWellReadout.row = Character.getNumericValue(wellPosition.toString().charAt(1))-9
-                    newWellReadout.col = Integer.valueOf(wellPosition.toString().substring(2, wellPosition.toString().length()-1))
+                    newWellReadout.row = Character.getNumericValue(wellPosition.toString().charAt(0))-9
+                    newWellReadout.col = Integer.valueOf(wellPosition.toString().substring(1, wellPosition.toString().length()))
                 }
 
                 objectInstance.addToWells(newWellReadout)
@@ -76,7 +76,6 @@ class ReadoutImportService {
                 //remove leading and tailing quote
                 if (colName.startsWith("\"") && colName.endsWith("\""))
                     trimmedColName = colName.substring(1, colName.length() - 1);
-
 
                 switch (trimmedColName) {
                     case resultFileCfg.rowCol:

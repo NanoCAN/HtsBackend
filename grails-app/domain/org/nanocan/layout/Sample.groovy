@@ -8,10 +8,24 @@ class Sample implements Serializable{
     String color
     boolean control
     String controlType
+    String uuid
+    String sampleGroupA
+    String sampleGroupADescription
+    String sampleGroupB
+    String sampleGroupBDescription
+    String sampleGroupC
+    String sampleGroupCDescription
 
     static hasMany = [identifiers: Identifier]
 
     static constraints = {
+        uuid nullable: true
+        sampleGroupA nullable: true
+        sampleGroupADescription nullable: true
+        sampleGroupB nullable: true
+        sampleGroupBDescription nullable: true
+        sampleGroupC nullable: true
+        sampleGroupCDescription nullable: true
         name unique: true
         controlType inList: ["positive", "negative", "transfection", "kill"], nullable: true
         type inList: ["siRNA", "miRNA inhibitor", "miRNA mimic", "compound", "unknown", "cell-line", "tissue"]

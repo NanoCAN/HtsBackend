@@ -1,9 +1,10 @@
 package org.nanocan.plates
 
+import org.codehaus.jackson.annotate.JsonIgnore
 import org.nanocan.layout.PlateLayout
 import org.nanocan.project.Experiment
 
-class Plate {
+class Plate implements Serializable{
 
     PlateType plateType
     String format
@@ -11,6 +12,10 @@ class Plate {
     String name
     PlateLayout plateLayout
     Experiment experiment
+    String uuid
+
+    @JsonIgnore
+    boolean controlPlate
 
     static belongsTo = [plateLayout: PlateLayout, experiment: Experiment]
 
@@ -26,6 +31,7 @@ class Plate {
     static hasMany = [readouts: Readout]
 
     static constraints = {
+        uuid nullable: true
         //barcodes need to be unique across the database
         barcode unique:  true
         name nullable: true, blank: false, unique: true

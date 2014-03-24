@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.savanah.plates.Readout" %>
+<%@ page import="org.nanocan.plates.Plate; org.nanocan.plates.Readout" %>
 
 <head>
 <r:script>
@@ -34,6 +34,14 @@
 </r:script>
 </head>
 
+<div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'dateOfReadout', 'error')} ">
+    <label for="dateOfReadout">
+        <g:message code="experiment.dateOfReadout.label" default="Day Of Readout" />
+
+    </label>
+    <g:jqDatePicker name="dateOfReadout" value="${readoutInstance?.dateOfReadout}"/>
+</div>
+
 
 <div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'typeOfReadout', 'error')} ">
 	<label for="typeOfReadout">
@@ -56,7 +64,7 @@
 		<g:message code="readout.plate.label" default="Plate" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="plate" name="plate.id" from="${org.nanocan.savanah.plates.Plate.list()}" optionKey="id" required="" value="${readoutInstance?.plate?.id}" class="many-to-one"/>
+	<g:select id="plate" name="plate.id" from="${Plate.list()}" optionKey="id" required="" value="${readoutInstance?.plate?.id}" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'wavelength', 'error')} required">

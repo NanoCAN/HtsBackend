@@ -45,13 +45,17 @@ class XlsxImportService {
                 try{
                     workbook = WorkbookFactory.create(new File(filePath))
                 }catch(org.apache.poi.hssf.OldExcelFormatException oefe){
+                    def escapedFilePath =  filePath.replace(" ", "\\ ");
+                    println escapedFilePath
                  //if we have to deal with very old excel files, try to convert it using ssconvert (needs to be installed of course)
-                    Process p = Runtime.getRuntime().exec("ssconvert ${filePath} ${filePath}x")
+                    Process p = Runtime.getRuntime().exec("ssconvert ${escapedFilePath} ${escapedFilePath}x")
                     p.waitFor()
-                    resultFile.filePath = "${filePath}x"
-                    resultFile.save(flush:true)
-                    new File(filePath).delete()
-                    return processXLSX("${filePath}x", sheets)
+                    //resultFile.filePath = "${filePath}x"
+                    //resultFile.save(flush:true)
+                    //new File(filePath).delete()
+                    if(new File("${filePath}x").exists())
+                        return processXLSX("${filePath}x", sheets)
+                    else return null
                 }
             def numOfSheets = workbook.getNumberOfSheets()
             for (int i = 0; i < numOfSheets; i++)

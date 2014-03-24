@@ -80,23 +80,52 @@ class SlideLayoutController {
         [slideLayoutInstance: new SlideLayout(params), experiments: Experiment.list()]
     }
 
+    def createFromFileFlow = {
+        initFlow{
+            action{
+                [slideLayoutInstance: new SlideLayout(), experiments: Experiment.list()]
+            }
+            on("success").to "create"
+        }
+
+        create{
+            on("upload").to "upload"
+        }
+
+        upload{
+            action{
+                params.createdBy = springSecurityService.currentUser
+                params.lastUpdatedBy = springSecurityService.currentUser
+
+                def slideLayoutInstance = new SlideLayout(params)
+
+                def file = request.getFile("layoutFileInput");
+                def content = file.getFileItem().getString()
+                [content: content, slideLayoutInstance: slideLayoutInstance]
+            }
+            on("success").to "importFile"
+        }
+
+        importFile{
+            action{
+                layoutImportService.importLayoutFromFile(flow.content, flow.slideLayoutInstance)
+                flow.slideLayoutInstance.save(flush:true, failOnError: true)
+            }
+            on("success").to "renderResponse"
+        }
+
+        renderResponse{
+            redirect(action:"show", id: flow.slideLayoutInstance.id)
+        }
+
+    }
+
     def sampleSpotTable(){
         def slideLayoutInstance = SlideLayout.get(params.id)
         def spots = slideLayoutInstance.sampleSpots
 
         [slideLayout:  slideLayoutInstance, spots: spots, sampleProperty: params.sampleProperty]
     }
-
-    def importSamplesFromFile(){
-
-        def slideLayoutInstance = SlideLayout.get(params.id)
-
-        layoutImportService.importSamplesFromFile(request, slideLayoutInstance)
-        slideLayoutInstance.refresh()
-
-        render(view:"show", model: [slideLayoutInstance: slideLayoutInstance, experiments: experimentService.findExperiment(slideLayoutInstance)])
-    }
-	
 	
 	def parseClipboardData(){
 		println params					//params is an object with all the parameters from the view.
@@ -139,7 +168,6 @@ class SlideLayoutController {
 
         params.createdBy = springSecurityService.currentUser
         params.lastUpdatedBy = springSecurityService.currentUser
-        println springSecurityService.currentUser
 
         def slideLayoutInstance = new SlideLayout(params)
 

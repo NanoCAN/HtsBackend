@@ -25,9 +25,4 @@
     <g:select name="experimentsSelected" multiple="${true}" size="10" from="${experiments}" optionKey="id"/>
 </div>
 
-<div class="fieldcontain">
-    <label for="controlPlate">
-        <g:message code="slideLayout.controlPlate.label" default="Control Plate?" />
-    </label>
-    <g:checkBox name="controlPlate"/>
-</div>
+
