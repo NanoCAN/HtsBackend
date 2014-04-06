@@ -25,7 +25,6 @@ class FileUploadService {
             long timestamp = currentDate.getTime()
             String basePath = grailsApplication.config?.upload?.directory?:""
             def filePath = basePath + timestamp.toString() + "_" + resultFile.originalFilename
-                                           println filePath
             resultFile.transferTo( new File(filePath) )
 
             def newResultFile = new ResultFile(fileType: type, fileName: (resultFile.originalFilename as String), filePath: filePath, dateUploaded:  currentDate as Date)
