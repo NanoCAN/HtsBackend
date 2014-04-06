@@ -125,8 +125,9 @@
                         <g:link controller="readout" action="create" params="['plate.id': plateInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'readout.label', default: 'Readout')])}</g:link>
                     </li>
                 </div>
+             </div>
 
-			<g:form>
+			<g:form controller="plate">
 				<fieldset class="buttons">
 					<g:hiddenField name="id" value="${plateInstance?.id}" />
 					<g:link class="edit" action="edit" id="${plateInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
