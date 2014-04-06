@@ -73,11 +73,11 @@ class SlideLayoutController {
 
         if(session.experimentSelected)
         {
-            slideLayoutInstanceList = Experiment.get(session.experimentSelected).layouts
+            slideLayoutInstanceList = Experiment.get(session.experimentSelected).slideLayouts
         }
         else if(session.projectSelected)
         {
-            slideLayoutInstanceList = Experiment.findByProject(Project.get(session.projectSelected as Long))?.layouts
+            slideLayoutInstanceList = Experiment.findAllByProject(Project.get(session.projectSelected as Long))?.collect{it.layouts}
         }
         else
         {

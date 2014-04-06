@@ -48,18 +48,6 @@ class PlateLayoutController {
         redirect(action: "list", params: params)
     }
 
-    def updateControlPlate(){
-        def plateLayoutInstance = PlateLayout.get(params.id)
-        def isControlPlate = false
-
-        if (params.controlPlate == "on") isControlPlate = true
-
-        plateLayoutInstance.controlPlate = isControlPlate
-
-        plateLayoutInstance.save(flush:true)
-        render "OK"
-    }
-
     def list() {
         //deal with max
         if(!params.max && session.maxPlateLayout) params.max = session.maxPlateLayout
@@ -79,7 +67,7 @@ class PlateLayoutController {
         }
         else if(session.projectSelected)
         {
-            plateLayoutInstanceList = Experiment.findByProject(Project.get(session.projectSelected)).plateLayouts
+            plateLayoutInstanceList = Experiment.findAllByProject(Project.get(session.projectSelected)).collect{it.plateLayouts}
         }
         else
         {
