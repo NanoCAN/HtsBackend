@@ -30,6 +30,9 @@
 package org.nanocan.plates
 
 import grails.plugins.springsecurity.Secured
+import org.nanocan.layout.SlideLayout
+import org.nanocan.project.Experiment
+import org.nanocan.project.Project
 
 @Secured(['ROLE_USER'])
 class PlateController {
@@ -39,6 +42,63 @@ class PlateController {
     def importReadoutData(){
 
     }
+
+    def list() {
+        //deal with max
+        if(!params.max && session.maxPlate) params.max = session.maxPlate
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        session.maxPlate = params.max
+
+        //deal with offset
+        params.offset = params.offset?:(session.offsetPlateResult?:0)
+        session.offsetPlateResult = params.offset
+
+        def plateInstanceList
+        def plateInstanceListTotal
+
+        if(session.experimentSelected)
+        {
+            plateInstanceList = []
+            Experiment.get(session.experimentSelected).plateLayouts.each{
+                plateInstanceList.addAll(Plate.findAllByPlateLayout(it))
+            }
+            plateInstanceList.unique()
+        }
+        else if(session.projectSelected)
+        {
+            plateInstanceList = []
+            def experiments = Experiment.findAllByProject(Project.get(session.projectSelected as Long))
+            experiments.each{
+                it.plateLayouts.each{ pl ->
+                    plateInstanceList.addAll(Plate.findAllByPlateLayout(pl))
+                }
+            }
+            plateInstanceList.unique()
+        }
+        else
+        {
+            plateInstanceList = Plate.list(params)
+            plateInstanceListTotal = Plate.count()
+        }
+
+        if (params.int('offset') > plateInstanceListTotal) params.offset = 0
+
+        if (session.experimentSelected || session.projectSelected)
+        {
+            plateInstanceListTotal = plateInstanceList?.size()?:0
+
+            if(plateInstanceListTotal > 0)
+            {
+                int rangeMin = Math.min(plateInstanceListTotal, params.int('offset'))
+                int rangeMax = Math.min(plateInstanceListTotal, (params.int('offset') + params.int('max')))
+
+                plateInstanceList = plateInstanceList.asList().subList(rangeMin, rangeMax)
+            }
+        }
+
+        [plateInstanceList: plateInstanceList, plateInstanceTotal: plateInstanceListTotal]
+    }
+    
     /*
     def getDataOrigins(){
 

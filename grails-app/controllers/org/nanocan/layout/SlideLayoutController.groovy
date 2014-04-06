@@ -77,7 +77,8 @@ class SlideLayoutController {
         }
         else if(session.projectSelected)
         {
-            slideLayoutInstanceList = Experiment.findAllByProject(Project.get(session.projectSelected as Long))?.collect{it.layouts}
+            slideLayoutInstanceList = []
+            Experiment.findAllByProject(Project.get(session.projectSelected as Long))?.each{slideLayoutInstanceList.addAll(it.slideLayouts)}
         }
         else
         {

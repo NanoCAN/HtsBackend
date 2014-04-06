@@ -58,13 +58,6 @@
                     <g:select name="experimentsSelected" multiple="${true}" size="10" from="${experiments}" value="${selectedExperiments}" optionKey="id"/>
                 </div>
 
-                <div class="fieldcontain">
-                    <label for="controlPlate">
-                        <g:message code="slideLayout.controlPlate.label" default="Control Plate?" />
-                    </label>
-                    <g:checkBox name="controlPlate" value="${plateLayoutInstance?.controlPlate}"/>
-                </div>
-
             </div>
         </fieldset>
         <fieldset class="buttons">

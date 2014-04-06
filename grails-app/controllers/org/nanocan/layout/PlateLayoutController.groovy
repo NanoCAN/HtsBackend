@@ -250,9 +250,13 @@ class PlateLayoutController {
         def plateLayoutInstance = PlateLayout.get(params.id)
 
         def newPlateLayout = plateLayoutService.deepClone(plateLayoutInstance)
+
+        def experiments = experimentService.findExperiment(plateLayoutInstance)
         newPlateLayout.name = params.name
 
         if(newPlateLayout.save(flush: true, failOnError: true)){
+            //also add to same experiments
+            experiments.each{ experimentService.addToExperiment(it) }
             flash.message = "Copy created successfully. Be aware: you are now working on the copy!"
             render (view:  "editAttributes", model: [plateLayout: newPlateLayout, wells: newPlateLayout.wells, sampleProperty: params.sampleProperty])
         }
