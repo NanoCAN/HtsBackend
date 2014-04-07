@@ -89,6 +89,9 @@ class PlateLayoutController {
                 int rangeMax = Math.min(plateLayoutInstanceListTotal, (params.int('offset') + params.int('max')))
 
                 plateLayoutInstanceList = plateLayoutInstanceList.asList().subList(rangeMin, rangeMax)
+                if(params.sort) plateLayoutInstanceList = plateLayoutInstanceList.sort{it[params.sort]}
+                else plateLayoutInstanceList.sort{ a,b -> a.id <=> b.id}
+                if(params.order == "desc") plateLayoutInstanceList = plateLayoutInstanceList.reverse()
             }
         }
 
