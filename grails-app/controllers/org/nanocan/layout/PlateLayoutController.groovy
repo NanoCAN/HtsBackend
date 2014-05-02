@@ -127,6 +127,7 @@ class PlateLayoutController {
             redirect(action: "list")
             return
         }
+        flash.message = flash.message
 
         redirect(action: "editAttributes", id:  plateLayoutInstance.id, params: params << [sampleProperty: "cellLine"])
     }
@@ -251,22 +252,28 @@ class PlateLayoutController {
 
     def createLayoutCopy() {
         def plateLayoutInstance = PlateLayout.get(params.id)
+        plateLayoutInstance.plates = null
 
         def newPlateLayout = plateLayoutService.deepClone(plateLayoutInstance)
 
-        def experiments = experimentService.findExperiment(plateLayoutInstance)
+        def selectedExperiments = experimentService.findExperiment(plateLayoutInstance)
+        def experiments = Experiment.list()
+        experiments.removeAll(selectedExperiments)
         newPlateLayout.name = params.name
 
-        if(newPlateLayout.save(flush: true, failOnError: true)){
+        if(newPlateLayout.save(flush: true)){
             //also add to same experiments
-            experiments.each{ experimentService.addToExperiment(it) }
+            selectedExperiments.each{ experimentService.addToExperiment(newPlateLayout, it) }
             flash.message = "Copy created successfully. Be aware: you are now working on the copy!"
-            render (view:  "editAttributes", model: [plateLayout: newPlateLayout, wells: newPlateLayout.wells, sampleProperty: params.sampleProperty])
+            render (view:  "editAttributes", model: [plateLayout: newPlateLayout, wells: newPlateLayout.wells,
+                                                     experiments: experiments, selectedExperiments: selectedExperiments,
+                                                     sampleProperty: params.sampleProperty])
         }
-
         else{
             flash.message = "Could not create copy: " + newPlateLayout.errors.toString()
-            render(view: "editAttributes", model: [plateLayout: plateLayoutInstance, wells: plateLayoutInstance.wells, sampleProperty: params.sampleProperty])
+            render(view: "editAttributes", model: [plateLayout: plateLayoutInstance, wells: plateLayoutInstance.wells,
+                                                   experiments: experiments, selectedExperiments: selectedExperiments,
+                                                   sampleProperty: params.sampleProperty])
         }
     }
 

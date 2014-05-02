@@ -61,7 +61,7 @@
 				</g:each>
 				</tbody>
 			</table>
-			<div class="pagination">
+			<div class="pagination">        ${controller}
 				<g:paginate total="${slideLayoutInstanceTotal}" />
 			</div>
 		</div>

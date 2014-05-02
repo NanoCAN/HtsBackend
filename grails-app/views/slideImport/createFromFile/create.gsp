@@ -31,7 +31,7 @@
     </g:hasErrors>
     <g:form name="uploadSheet" method="POST" enctype="multipart/form-data">
         <fieldset class="form">
-            <g:render template="form"/>
+            <g:render template="../slideLayout/form"/>
         </fieldset>
         <div class="fieldcontain ${hasErrors(bean: slideLayoutInstance, field: 'layoutFile', 'error')} ">
             <label for="layoutFile">

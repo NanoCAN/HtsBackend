@@ -113,46 +113,6 @@ class SlideLayoutController {
         [slideLayoutInstance: new SlideLayout(params), experiments: Experiment.list()]
     }
 
-    def createFromFileFlow = {
-        initFlow{
-            action{
-                [slideLayoutInstance: new SlideLayout(), experiments: Experiment.list()]
-            }
-            on("success").to "create"
-        }
-
-        create{
-            on("upload").to "upload"
-        }
-
-        upload{
-            action{
-                params.createdBy = springSecurityService.currentUser
-                params.lastUpdatedBy = springSecurityService.currentUser
-
-                def slideLayoutInstance = new SlideLayout(params)
-
-                def file = request.getFile("layoutFileInput");
-                def content = file.getFileItem().getString()
-                [content: content, slideLayoutInstance: slideLayoutInstance]
-            }
-            on("success").to "importFile"
-        }
-
-        importFile{
-            action{
-                layoutImportService.importLayoutFromFile(flow.content, flow.slideLayoutInstance)
-                flow.slideLayoutInstance.save(flush:true, failOnError: true)
-            }
-            on("success").to "renderResponse"
-        }
-
-        renderResponse{
-            redirect(action:"show", id: flow.slideLayoutInstance.id)
-        }
-
-    }
-
     def sampleSpotTable(){
         def slideLayoutInstance = SlideLayout.get(params.id)
         def spots = slideLayoutInstance.sampleSpots
