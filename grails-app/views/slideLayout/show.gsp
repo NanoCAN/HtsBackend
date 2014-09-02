@@ -97,6 +97,15 @@
                         </li>
                         </g:if>
 
+                        <g:if test="${slideLayoutInstance?.depositionDirection}">
+                            <li class="fieldcontain">
+                                <span id="depositionDirection-label" class="property-label"><g:message code="slideLayout.depositionDirection.label" default="Deposition Direction" /></span>
+
+                                <span class="property-value" aria-labelledby="depositionDirection-label"><g:fieldValue bean="${slideLayoutInstance}" field="depositionDirection"/></span>
+
+                            </li>
+                        </g:if>
+
                         <g:if test="${experiments}">
                             <li class="fieldcontain">
                                 <span id="experiments-label" class="property-label"><g:message code="slideLayout.experiments.label" default="Experiments" /></span>

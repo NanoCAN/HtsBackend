@@ -48,6 +48,14 @@
 	<g:textField name="depositionPattern" minSize="1" required="" value="${slideLayoutInstance?.depositionPattern?:'[4,4,2,2,1,1]'}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: slideLayoutInstance, field: 'depositionDirection', 'error')} ">
+    <label for="depositionDirection">
+        <g:message code="slideLayout.depositionPattern.label" default="depositionDirection" />
+        <span class="required-indicator">*</span>
+    </label>
+    <g:select name="depositionDirection" required="" from="['row-wise', 'column-wise']" value="${slideLayoutInstance?.depositionDirection?:'row-wise'}"/>
+</div>
+
 <div class="fieldcontain">
     <label for="experiments">
         <g:message code="slideLayout.experiments.label" default="Experiments" />

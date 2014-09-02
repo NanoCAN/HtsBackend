@@ -32,6 +32,7 @@ package org.nanocan.layout
 import groovy.sql.Sql
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.commons.ApplicationHolder
+import org.codehaus.groovy.grails.commons.DefaultGrailsDomainClass
 
 class PlateLayoutService {
 
@@ -116,7 +117,7 @@ class PlateLayoutService {
         def newDomainInstance = domainInstanceToClone.getClass().newInstance()
 
         //Returns a DefaultGrailsDomainClass (as interface GrailsDomainClass) for inspecting properties
-        def domainClass = ApplicationHolder.application.getDomainClass(newDomainInstance.getClass().name)
+        def domainClass = new DefaultGrailsDomainClass(newDomainInstance.class)
 
         domainClass?.persistentProperties.each{prop ->
             if(prop.association){

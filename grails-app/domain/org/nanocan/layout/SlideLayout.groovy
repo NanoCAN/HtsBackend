@@ -46,6 +46,7 @@ class SlideLayout implements Serializable{
     int numberOfBlocks
     Integer blocksPerRow
     String depositionPattern
+    String depositionDirection
     List sourcePlates
     ExtractionHead extractionHead
 
@@ -54,6 +55,7 @@ class SlideLayout implements Serializable{
     SortedSet sampleSpots
 
     static constraints = {
+        depositionDirection inList: ['row-wise', 'column-wise']
         extractionHead nullable:true
         sourcePlates nullable: true
         title unique: true, blank: false
