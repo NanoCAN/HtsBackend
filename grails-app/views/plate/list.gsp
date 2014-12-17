@@ -32,15 +32,11 @@
 						<g:sortableColumn property="barcode" title="${message(code: 'plate.barcode.label', default: 'Barcode')}" />
 					
 						<g:sortableColumn property="name" title="${message(code: 'plate.name.label', default: 'Name')}" />
-					
-						<th><g:message code="plate.plateType.label" default="Plate Type" /></th>
-					
+
 						<g:sortableColumn property="format" title="${message(code: 'plate.format.label', default: 'Format')}" />
 					
 						<g:sortableColumn property="replicate" title="${message(code: 'plate.replicate.label', default: 'Replicate')}" />
-					
-						<g:sortableColumn property="rows" title="${message(code: 'plate.rows.label', default: 'Rows')}" />
-					
+
 					</tr>
 				</thead>
 				<tbody>
@@ -49,16 +45,12 @@
 					
 						<td><g:link action="show" id="${plateInstance.id}">${fieldValue(bean: plateInstance, field: "barcode")}</g:link></td>
 					
-						<td>${fieldValue(bean: plateInstance, field: "name")}</td>
-					
-						<td>${fieldValue(bean: plateInstance, field: "plateType")}</td>
-					
+						<td><g:link action="show" id="${plateInstance.id}">${fieldValue(bean: plateInstance, field: "name")}</g:link></td>
+
 						<td>${fieldValue(bean: plateInstance, field: "format")}</td>
 					
 						<td>${fieldValue(bean: plateInstance, field: "replicate")}</td>
-					
-						<td>${fieldValue(bean: plateInstance, field: "rows")}</td>
-					
+
 					</tr>
 				</g:each>
 				</tbody>

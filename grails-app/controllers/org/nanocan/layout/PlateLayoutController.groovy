@@ -67,7 +67,8 @@ class PlateLayoutController {
         }
         else if(session.projectSelected)
         {
-            plateLayoutInstanceList = Experiment.findAllByProject(Project.get(session.projectSelected)).collect{it.plateLayouts}
+            plateLayoutInstanceList = []
+            Experiment.findAllByProject(Project.get(session.projectSelected as Long))?.each{plateLayoutInstanceList.addAll(it.plateLayouts)}
         }
         else
         {
