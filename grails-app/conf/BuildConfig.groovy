@@ -62,6 +62,9 @@ grails.project.dependency.resolution = {
         compile (group:'org.apache.poi', name:'poi', version:'3.9')
         //xlxs file support
         compile (group:'org.apache.poi', name:'poi-ooxml', version:'3.9')
+
+        //https connection with self-signed certificates
+        compile 'com.github.kevinsawicki:http-request:5.4.1'
     }
 
     plugins {

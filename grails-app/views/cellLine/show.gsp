@@ -55,6 +55,20 @@
             </li>
         </g:if>
 
+        <g:if test="${cellLineInstance?.openLabFrameworkId}">
+            <li class="fieldcontain">
+                <span id="openLabFramework-label" class="property-label"><g:message code="cellLine.openLabFramework.label"
+                                                                         default="OpenLabFramework Cell Line"/></span>
+
+                <span class="property-value" aria-labelledby="openLabFramework-label">
+                <g:link controller="cellLine" action="redirectToOpenLabFramework" target="_blank" id="${cellLineInstance.openLabFrameworkId}">
+                    ${cellLineInstance.openLabFrameworkTitle}
+                </g:link>
+                </span>
+
+            </li>
+        </g:if>
+
     </ol>
     <g:form>
         <fieldset class="buttons">

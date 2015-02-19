@@ -29,10 +29,26 @@
  */
 package org.nanocan.layout
 
+import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 
 @Secured(['ROLE_USER'])
 class CellLineController {
 
+    def openLabFrameworkService
+
     def scaffold = true
+
+    def searchOpenLabFrameworkCellLineData(){
+        def jsonList = openLabFrameworkService.searchCellLineData(params.term)
+
+        if(!jsonList) response.sendError(404)
+        else render jsonList as JSON
+    }
+
+    def redirectToOpenLabFramework(){
+        def redirectToUrl = openLabFrameworkService.redirectToCellLineData(params.id)
+
+        redirect(url: redirectToUrl)
+    }
 }

@@ -33,10 +33,14 @@ class CellLine implements Serializable{
 
     String name
     String color
+    Long openLabFrameworkId
+    String openLabFrameworkTitle
 
     static constraints = {
         name unique:  true , nullable: false
         color unique:  true, validator:  {val, obj -> val != "#ffffff"}, nullable: false, blank: false
+        openLabFrameworkId nullable: true
+        openLabFrameworkTitle nullable: true
     }
 
     String toString(){
