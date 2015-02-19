@@ -130,7 +130,39 @@ class SlideLayoutController {
 			rowsPerBlock : slideLayoutInstance.rowsPerBlock,spots:spots, numberOfBlocks: slideLayoutInstance.numberOfBlocks]
 		render template: "tableTemplate", model: model
 	}
-	
+
+
+    def copySlideLayout()
+    {
+        def slideLayoutInstance = SlideLayout.get(params.id)
+
+        def selectedExperiments = experimentService.findExperiment(slideLayoutInstance)
+        def experiments = Experiment.list()
+
+        if(SlideLayout.findByTitle(params.name)){
+            flash.message = "Could not create copy: Name already in use"
+            render(view: "show", model: [slideLayoutInstance: slideLayoutInstance,
+                                         experiments: experimentService.findExperiment(slideLayoutInstance)])
+            return
+        }
+
+        SlideLayout newSlideLayout = slideLayoutService.copySlideLayout(slideLayoutInstance, params.name)
+        newSlideLayout.lastUpdatedBy = springSecurityService.currentUser
+        newSlideLayout.createdBy = springSecurityService.currentUser
+
+        experiments.removeAll(selectedExperiments)
+
+        if(newSlideLayout.save(flush: true)){
+            //also add to same experiments
+            selectedExperiments.each{ experimentService.addToExperiment(newSlideLayout, it) }
+            flash.message = "Copy created successfully. Be aware: you are now working on the copy!"
+            render (view:  "show", model: [slideLayoutInstance: newSlideLayout, experiments: experimentService.findExperiment(newSlideLayout)])
+        }
+        else{
+            flash.message = "Could not create copy: " + newSlideLayout.errors.toString()
+            render (view:  "show", model: [slideLayoutInstance: newSlideLayout, experiments: experimentService.findExperiment(newSlideLayout)])
+        }
+    }
 
     def updateSpotProperty()
     {

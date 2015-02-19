@@ -33,7 +33,7 @@
     </div>
 
     <div id="show-slideLayout" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+			<h1><g:message code="default.show.label" args="[entityName]" /> ${slideLayoutInstance.title}</h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
@@ -163,6 +163,26 @@
                     </ul>
                 </div>
                 </g:if>
+                <h3><a href="#">Copy this layout</a></h3>
+                <div>
+                    <g:form action="copySlideLayout" name="copySlideLayoutForm">
+                        <g:hiddenField name="id" value="${slideLayoutInstance.id}"/>
+                        <fieldset class="form">
+                            <div class="fieldcontain">
+                                <label for="copyName">
+                                    <g:message code="slideLayout.experiments.label" default="Name for the copy" />
+                                </label>
+                                <g:textField name="name" value="${slideLayoutInstance.title} (copy)"/>
+                            </div>
+
+
+                        </fieldset>
+                        <fieldset class="buttons">
+                            <g:submitButton class="save" name="create copy"/>
+                        </fieldset>
+
+                    </g:form>
+                </div>
                 <h3><a href="#">Spot Properties</a></h3>
                 <div>
                     <div>

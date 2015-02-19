@@ -30,6 +30,7 @@
 package org.nanocan.layout
 
 import groovy.sql.Sql
+import org.codehaus.groovy.grails.commons.DefaultGrailsDomainClass
 
 /**
  * This service handles additional operations regarding the slide layout
@@ -82,6 +83,41 @@ class SlideLayoutService {
         else insertLoop(null)
 
         return null
+    }
+
+    def copySlideLayout(slideLayoutInstance, newName)
+    {
+        def newSlideLayout = new SlideLayout()
+        newSlideLayout.dateCreated = new Date()
+        newSlideLayout.lastUpdated = new Date()
+
+        newSlideLayout.title = newName
+        newSlideLayout.columnsPerBlock = slideLayoutInstance.columnsPerBlock
+        newSlideLayout.rowsPerBlock = slideLayoutInstance.rowsPerBlock
+        newSlideLayout.numberOfBlocks = slideLayoutInstance.numberOfBlocks
+        newSlideLayout.blocksPerRow = slideLayoutInstance.blocksPerRow
+        newSlideLayout.depositionDirection = slideLayoutInstance.depositionDirection
+        newSlideLayout.depositionPattern = slideLayoutInstance.depositionPattern
+        newSlideLayout.extractionHead = slideLayoutInstance.extractionHead
+        slideLayoutInstance.sourcePlates.each{
+            newSlideLayout.addToSourcePlates(it)
+        }
+
+        slideLayoutInstance.sampleSpots.each{
+            newSlideLayout.addToSampleSpots(copySpot(it))
+        }
+        return(newSlideLayout)
+    }
+
+    def copySpot(layoutSpotInstance)
+    {
+        def layoutSpotDefaultDomainClass = new DefaultGrailsDomainClass(LayoutSpot.class)
+        def newLayoutSpotInstance = new LayoutSpot()
+        layoutSpotDefaultDomainClass.persistentProperties.each{prop ->
+            if(prop.name != "slideLayout")
+                newLayoutSpotInstance."${prop.name}" = layoutSpotInstance."${prop.name}"
+        }
+        return newLayoutSpotInstance
     }
 
     /**

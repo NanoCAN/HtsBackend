@@ -31,8 +31,8 @@ package org.nanocan.layout
 
 import groovy.sql.Sql
 import org.apache.commons.lang.StringUtils
-import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.DefaultGrailsDomainClass
+import org.codehaus.groovy.grails.commons.GrailsClass
 
 class PlateLayoutService {
 
@@ -48,7 +48,7 @@ class PlateLayoutService {
     def createWellLayouts(PlateLayout plateLayout) {
 
         //get config
-        int batchSize = grailsApplication.config.jdbc.batchSize?:96
+        int batchSize = grailsApplication.config.jdbc.batchSize ?: 96
         boolean useGroovySql = grailsApplication.config.jdbc.groovySql.toString().toBoolean()
 
         log.debug "using groovy sql instead of GORM:" + useGroovySql
@@ -58,16 +58,16 @@ class PlateLayoutService {
                 for (int row = 1; row <= plateLayout.rows; row++) {
 
                     if (useGroovySql) stmt.addBatch(0, col, plateLayout.id, row)
-                    else new WellLayout(col: col, row: row, plateLayout: plateLayout, numberOfCellsSeeded: null, inducer: null, treatment: null, sample:  null).save(flush: true, failOnError: true)
+                    else new WellLayout(col: col, row: row, plateLayout: plateLayout, numberOfCellsSeeded: null, inducer: null, treatment: null, sample: null).save(flush: true, failOnError: true)
                 }
             }
         }
 
-        if(useGroovySql){
+        if (useGroovySql) {
             //create an sql instance for direct inserts via groovy sql
             def sql = Sql.newInstance(dataSourceUnproxied)
 
-            sql.withBatch(batchSize, 'insert into well_layout (version, col, plate_layout_id, row) values (?, ?, ?, ?)'){ stmt ->
+            sql.withBatch(batchSize, 'insert into well_layout (version, col, plate_layout_id, row) values (?, ?, ?, ?)') { stmt ->
                 insertLoop(stmt)
             }
             //clean up
@@ -75,9 +75,7 @@ class PlateLayoutService {
 
             //refresh slide layout, because hibernate does not know about our changes
             plateLayout.refresh()
-        }
-
-        else insertLoop(null)
+        } else insertLoop(null)
 
         return null
     }
@@ -89,11 +87,11 @@ class PlateLayoutService {
      * @param plateLayout
      * @return
      */
-    def updateWellProperties(params, wellProp, plateLayout){
+    def updateWellProperties(params, wellProp, plateLayout) {
         def numberOfWells = params.keySet().size()
         def currentWell = 0
 
-        params.each {key, value ->
+        params.each { key, value ->
             if (value != "") {
                 def well = WellLayout.get(key as Long)
 
@@ -110,43 +108,28 @@ class PlateLayoutService {
         }
     }
 
+    def copyPlateLayout(plateLayoutInstance, newName) {
+        def newPlateLayout = new PlateLayout()
+        newPlateLayout.dateCreated = new Date()
+        newPlateLayout.lastUpdated = new Date()
 
-    def deepClone(domainInstanceToClone){
+        newPlateLayout.format = plateLayoutInstance.format
+        newPlateLayout.name = newName
 
-        //Our target instance for the instance we want to clone
-        def newDomainInstance = domainInstanceToClone.getClass().newInstance()
-
-        //Returns a DefaultGrailsDomainClass (as interface GrailsDomainClass) for inspecting properties
-        def domainClass = new DefaultGrailsDomainClass(newDomainInstance.class)
-
-        domainClass?.persistentProperties.each{prop ->
-            if(prop.association){
-                if(prop.owningSide){
-                    //we have to deep clone owned associations
-                    if(prop.oneToOne){
-                        def newAssociationInstance = deepClone(domainInstanceToClone."${prop.name}")
-                        newDomainInstance."${prop.name}" = newAssociationInstance
-                    }
-                    else{
-                        domainInstanceToClone."${prop.name}".each{ associationInstance ->
-                            def newAssociationInstance = deepClone(associationInstance)
-                            newDomainInstance."addTo${StringUtils.capitalize(prop.name)}"(newAssociationInstance)
-                        }
-                    }
-                }
-                else{
-                    if(!prop.bidirectional){
-                        //If the association isn't owned or the owner, then we can just do a  shallow copy of the reference.
-                        newDomainInstance."${prop.name}" = domainInstanceToClone."${prop.name}"
-                    }
-                }
-            }
-            else{
-                //If the property isn't an association then simply copy the value
-                newDomainInstance."${prop.name}" = domainInstanceToClone."${prop.name}"
-            }
+        plateLayoutInstance.wells.each{
+            newPlateLayout.addToWells(copyWell(it))
         }
-
-        return newDomainInstance
+        return(newPlateLayout)
     }
-}
+
+    def copyWell(wellLayoutInstance)
+    {
+        def wellsDefaultDomainClass = new DefaultGrailsDomainClass(WellLayout.class)
+        def newWellLayoutInstance = new WellLayout()
+        wellsDefaultDomainClass.persistentProperties.each{prop ->
+            if(prop.name != "plateLayout")
+                newWellLayoutInstance."${prop.name}" = wellLayoutInstance."${prop.name}"
+        }
+        return newWellLayoutInstance
+    }
+ }

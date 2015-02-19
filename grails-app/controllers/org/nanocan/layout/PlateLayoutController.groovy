@@ -253,14 +253,22 @@ class PlateLayoutController {
 
     def createLayoutCopy() {
         def plateLayoutInstance = PlateLayout.get(params.id)
-        plateLayoutInstance.plates = null
-
-        def newPlateLayout = plateLayoutService.deepClone(plateLayoutInstance)
-
         def selectedExperiments = experimentService.findExperiment(plateLayoutInstance)
         def experiments = Experiment.list()
+
+        if(PlateLayout.findByName(params.name)){
+            flash.message = "Could not create copy: Name already in use"
+            render(view: "editAttributes", model: [plateLayout: plateLayoutInstance, wells: plateLayoutInstance.wells,
+                                                   experiments: experiments, selectedExperiments: selectedExperiments,
+                                                   sampleProperty: params.sampleProperty])
+            return
+        }
+
+        PlateLayout newPlateLayout = plateLayoutService.copyPlateLayout(plateLayoutInstance, params.name)
+        newPlateLayout.lastUpdatedBy = springSecurityService.currentUser
+        newPlateLayout.createdBy = springSecurityService.currentUser
+
         experiments.removeAll(selectedExperiments)
-        newPlateLayout.name = params.name
 
         if(newPlateLayout.save(flush: true)){
             //also add to same experiments
