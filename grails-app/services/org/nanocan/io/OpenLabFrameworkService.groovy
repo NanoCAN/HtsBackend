@@ -28,10 +28,11 @@ class OpenLabFrameworkService {
     }
 
     def redirectToCellLineData(String id){
-        def openlabframeworkUrl = grailsApplication.config.openlabframework.rest.url
+        def openlabframeworkUrl = grailsApplication.config.openlabframework.rest.callback.url
+        if(!openlabframeworkUrl) openlabframeworkUrl = grailsApplication.config.openlabframework.rest.url
         if(!openlabframeworkUrl) return(null)
 
-        String queryUrl = openlabframeworkUrl + "#bodyContent=" + "/OpenLabFramework/cellLineData/show/2770%3Fid%3D" + id
+        String queryUrl = openlabframeworkUrl + "#bodyContent=" + "/OpenLabFramework/cellLineData/show/%3Fid%3D" + id
         return(queryUrl)
     }
 }

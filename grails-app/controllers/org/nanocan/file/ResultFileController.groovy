@@ -45,7 +45,7 @@ class ResultFileController {
 
         if (file.exists()) {
             response.setContentType("application/octet-stream")
-            response.setHeader("Content-disposition", "filename=${file.name}")
+            response.setHeader("Content-Disposition","attachment; filename=\"${resultFileInstance.fileName}\"")
             response.outputStream << file.bytes
             return
         }
