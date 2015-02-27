@@ -156,11 +156,11 @@ class FileUploadService {
             resultImage = (CommonsMultipartFile) mpr.getFile("resultImageInput");
             protocol = (CommonsMultipartFile) mpr.getFile("protocolInput");
 
-            if(!resultFile.empty) objectInstance.resultFile = createResultFile(resultFile, "Result")
+            if(resultFile && !resultFile.empty) objectInstance.resultFile = createResultFile(resultFile, "Result")
 
-            if(!resultImage.empty) objectInstance.resultImage = createResultFile(resultImage, "Image")
+            if(resultImage && !resultImage.empty) objectInstance.resultImage = createResultFile(resultImage, "Image")
 
-            if(!protocol.empty) objectInstance.protocol = createResultFile(protocol, "Protocol")
+            if(protocol && !protocol.empty) objectInstance.protocol = createResultFile(protocol, "Protocol")
         }
 
         return objectInstance

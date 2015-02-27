@@ -41,14 +41,19 @@ class CellLineController {
 
     def searchOpenLabFrameworkCellLineData(){
         def jsonList = openLabFrameworkService.searchCellLineData(params.term)
-
-        if(!jsonList) response.sendError(404)
+        if(jsonList == null){
+            response.sendError(404); return
+        }
         else render jsonList as JSON
     }
 
     def redirectToOpenLabFramework(){
         def redirectToUrl = openLabFrameworkService.redirectToCellLineData(params.id)
-
-        redirect(url: redirectToUrl)
+        if(!redirectToUrl)
+        {
+             flash.message = "Redirect URL could not be determined"
+             redirect(action: "show", id: params.id)
+        }
+        else redirect(url: redirectToUrl)
     }
 }
