@@ -55,7 +55,7 @@ class ReadoutExportController {
         def readoutInstance = Readout.get(params.id)
 
         if(accessAllowed(params.securityToken, readoutInstance)){
-            def meta = ["id","Plate", "PlateRow", "PlateCol", "PlateLayout", "PlateReadout"]
+            def meta = ["id","Plate", "PlateRow", "PlateCol", "Replicate", "PlateLayout", "PlateReadout"]
             render meta as JSON
         }
         else{
@@ -135,6 +135,7 @@ class ReadoutExportController {
                     property "pl.id"
                     property "row"
                     property "col"
+                    property "pl.replicate"
                     property "playout.id"
                     property "measuredValue"
                 }

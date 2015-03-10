@@ -79,21 +79,22 @@ class PlateController {
             plateInstanceListTotal = Plate.count()
         }
 
-        if (params.int('offset') > plateInstanceListTotal) params.offset = 0
-
         if (session.experimentSelected || session.projectSelected)
         {
             plateInstanceListTotal = plateInstanceList?.size()?:0
+            if (params.int('offset') > plateInstanceListTotal) params.offset = 0
 
             if(plateInstanceListTotal > 0)
             {
                 int rangeMin = Math.min(plateInstanceListTotal, params.int('offset'))
                 int rangeMax = Math.min(plateInstanceListTotal, (params.int('offset') + params.int('max')))
 
-                plateInstanceList = plateInstanceList.asList().subList(rangeMin, rangeMax)
+                plateInstanceList = plateInstanceList.asList()
                 if(params.sort) plateInstanceList = plateInstanceList.sort{it[params.sort]}
                 else plateInstanceList.sort{ a,b -> a.id <=> b.id}
                 if(params.order == "desc") plateInstanceList = plateInstanceList.reverse()
+
+                plateInstanceList = plateInstanceList.subList(rangeMin, rangeMax)
             }
         }
 

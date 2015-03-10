@@ -86,23 +86,25 @@ class SlideLayoutController {
             slideLayoutInstanceListTotal = SlideLayout.count()
         }
 
-        //fix offset
-        if(params.int('offset') >= slideLayoutInstanceListTotal) params.offset = 0
-
         //create subset of list
         if(session.experimentSelected || session.projectSelected)
         {
             slideLayoutInstanceListTotal = slideLayoutInstanceList?.size()?:0
+
+            //fix offset
+            if(params.int('offset') >= slideLayoutInstanceListTotal) params.offset = 0
 
             if(slideLayoutInstanceListTotal > 0)
             {
                 int rangeMin = Math.min(slideLayoutInstanceListTotal, params.int('offset'))
                 int rangeMax = Math.min(slideLayoutInstanceListTotal, (params.int('offset') + params.int('max')))
 
-                slideLayoutInstanceList = slideLayoutInstanceList.asList().subList(rangeMin, rangeMax)
+                slideLayoutInstanceList = slideLayoutInstanceList.asList()
                 if(params.sort) slideLayoutInstanceList = slideLayoutInstanceList.sort{it[params.sort]}
                 else slideLayoutInstanceList.sort{ a,b -> a.id <=> b.id}
                 if(params.order == "desc") slideLayoutInstanceList = slideLayoutInstanceList.reverse()
+
+                slideLayoutInstanceList = slideLayoutInstanceList.subList(rangeMin, rangeMax)
             }
         }
 

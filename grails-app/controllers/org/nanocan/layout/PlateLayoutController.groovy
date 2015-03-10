@@ -76,23 +76,24 @@ class PlateLayoutController {
             plateLayoutInstanceListTotal = PlateLayout.count()
         }
 
-        //fix offset when necessary
-        if(params.int('offset') >= plateLayoutInstanceListTotal) params.offset = 0
-
         //create subset of list
         if (session.experimentSelected || session.projectSelected)
         {
             plateLayoutInstanceListTotal = plateLayoutInstanceList?.size()?:0
+            //fix offset when necessary
+            if(params.int('offset') >= plateLayoutInstanceListTotal) params.offset = 0
 
             if(plateLayoutInstanceListTotal > 0)
             {
                 int rangeMin = Math.min(plateLayoutInstanceListTotal, params.int('offset'))
                 int rangeMax = Math.min(plateLayoutInstanceListTotal, (params.int('offset') + params.int('max')))
 
-                plateLayoutInstanceList = plateLayoutInstanceList.asList().subList(rangeMin, rangeMax)
+                plateLayoutInstanceList = plateLayoutInstanceList.asList()
                 if(params.sort) plateLayoutInstanceList = plateLayoutInstanceList.sort{it[params.sort]}
                 else plateLayoutInstanceList.sort{ a,b -> a.id <=> b.id}
                 if(params.order == "desc") plateLayoutInstanceList = plateLayoutInstanceList.reverse()
+
+                plateLayoutInstanceList = plateLayoutInstanceList.subList(rangeMin, rangeMax)
             }
         }
 
