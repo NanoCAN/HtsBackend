@@ -47,7 +47,6 @@
 	<g:field name="replicate" type="number" value="${plateInstance.replicate}" required=""/>
 </div>
 
-
 <div class="fieldcontain ${hasErrors(bean: plateInstance, field: 'experiment', 'error')} required">
 	<label for="experiment">
 		<g:message code="plate.experiment.label" default="Experiment" />

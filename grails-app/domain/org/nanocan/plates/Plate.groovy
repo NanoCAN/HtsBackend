@@ -70,7 +70,7 @@ class Plate implements Serializable{
         replicate(unique: ['experiment', 'plateLayout'])
         rows editable: false
         cols editable: false
-        experiment editable: false
+        experiment editable: false, nullable: true
     }
 
     String toString(){

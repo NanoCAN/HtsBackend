@@ -100,7 +100,7 @@ class PlateController {
 
         [plateInstanceList: plateInstanceList, plateInstanceTotal: plateInstanceListTotal]
     }
-    
+
     /*
     def getDataOrigins(){
 
