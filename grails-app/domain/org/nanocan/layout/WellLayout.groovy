@@ -34,6 +34,8 @@ class WellLayout implements Comparable{
     int col
     int row
 
+    static searchable = true
+
     NumberOfCellsSeeded numberOfCellsSeeded
     CellLine cellLine
     Inducer inducer

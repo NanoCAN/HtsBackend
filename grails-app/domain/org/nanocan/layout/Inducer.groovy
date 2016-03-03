@@ -36,6 +36,8 @@ class Inducer implements Serializable{
     String concentrationUnit
     String color
 
+    static searchable = true
+
     static constraints = {
         name unique: true, blank: false, nullable:  false
         concentration()

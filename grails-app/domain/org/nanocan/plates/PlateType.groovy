@@ -36,6 +36,8 @@ class PlateType implements Serializable{
     String name
     String vendor
 
+    static searchable = true
+
     static constraints = {
         wellShape inList: ["round-bottom", "v-bottom", "flat-bottom"]
     }

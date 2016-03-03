@@ -34,6 +34,9 @@ import org.nanocan.security.Person
 
 class SlideLayout implements Serializable{
 
+
+    static searchable = true
+
     Date dateCreated
     Date lastUpdated
 

@@ -53,8 +53,9 @@ class Plate implements Serializable{
     int cols
     int rows
 
-    static mapping = {
+    static searchable = true
 
+    static mapping = {
     }
 
     static hasMany = [readouts: Readout]

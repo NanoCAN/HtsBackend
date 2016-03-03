@@ -29,11 +29,11 @@
  */
 package org.nanocan.project
 
-import org.nanocan.layout.SlideLayout
 import org.nanocan.security.Person
-import org.nanocan.layout.PlateLayout
 
 class Project implements Serializable {
+
+    static searchable = true
 
     String projectTitle
     String projectDescription

@@ -31,6 +31,8 @@ package org.nanocan.layout
 
 class SpotType implements Serializable {
 
+    static searchable = true
+
     String name
     String type
     String color

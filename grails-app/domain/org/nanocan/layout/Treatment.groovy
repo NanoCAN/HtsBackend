@@ -31,6 +31,7 @@ package org.nanocan.layout
 
 class Treatment implements Serializable{
 
+    static searchable = true
     String name
     String comments
     String color

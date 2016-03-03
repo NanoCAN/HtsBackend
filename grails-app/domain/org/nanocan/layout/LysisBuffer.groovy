@@ -31,6 +31,8 @@ package org.nanocan.layout
 
 class LysisBuffer implements Serializable{
 
+    static searchable = true
+
     String name
     Double concentration
     String concentrationUnit

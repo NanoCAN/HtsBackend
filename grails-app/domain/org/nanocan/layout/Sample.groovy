@@ -31,6 +31,7 @@ package org.nanocan.layout
 
 class Sample implements Serializable{
 
+    static searchable = true
     String name
     String type
     String target

@@ -35,6 +35,7 @@ class Identifier implements Serializable{
     String accessionNumber
     String type
 
+    static searchable = true
     static belongsTo = [sample: Sample]
 
     static constraints = {

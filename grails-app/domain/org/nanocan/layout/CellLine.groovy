@@ -31,6 +31,7 @@ package org.nanocan.layout
 
 class CellLine implements Serializable{
 
+    static searchable = true
     String name
     String color
     Long openLabFrameworkId

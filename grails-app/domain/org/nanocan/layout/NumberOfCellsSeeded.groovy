@@ -31,6 +31,8 @@ package org.nanocan.layout
 
 class NumberOfCellsSeeded implements Serializable{
 
+    static searchable = true
+
     String name
     String color
 

@@ -113,9 +113,8 @@
                     <g:if test="${plateInstance?.readouts}">
 
                     <g:each in="${plateInstance.readouts}" var="r">
-                    <span class="property-value" aria-labelledby="readouts-label"><g:link controller="readout" action="show" id="${r.id}">${r?.encodeAsHTML()}</g:link></span>
+                    <span class="property-value" aria-labelledby="readouts-label"><g:link controller="readout" action="show" id="${r.id}">${r?.encodeAsHTML()}</g:link></span></br>
                     </g:each>
-
 
                     </g:if>
                     <g:else>
