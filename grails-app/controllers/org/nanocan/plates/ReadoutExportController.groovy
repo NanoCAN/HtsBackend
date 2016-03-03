@@ -33,6 +33,8 @@ import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 import org.codehaus.jackson.map.ObjectMapper
 import org.hibernate.criterion.CriteriaSpecification
+import org.nanocan.layout.PlateLayout
+import org.nanocan.layout.WellLayout
 
 class ReadoutExportController {
 
@@ -63,6 +65,19 @@ class ReadoutExportController {
         }
     }
 
+    def exportPlateLayoutMetaDataAsJSON = {
+        def plateLayoutInstance = PlateLayout.get(params.id)
+
+        if(accessAllowed(params.securityToken, plateLayoutInstance)){
+            def meta = ["id","PlateLayout", "PlateRow", "PlateCol", "AmountOfCells", "CellLine", "Inducer", "InducerConcentration", "Treatment", "Sample", "Control"]
+            render meta as JSON
+        }
+        else{
+            render status: 403
+        }
+    }
+
+
     def isSecurityTokenValid = {
         if(Readout.findByUuid(params.id)) render true
         else if(Plate.findByUuid(params.id)) render true
@@ -77,9 +92,29 @@ class ReadoutExportController {
         else render error: 404
     }
 
+    def getPlateLayoutIdFromSecurityToken = {
+        def plateLayoutInstance = PlateLayout.findByUuid(params.id)
+        if(plateLayoutInstance){
+            render plateLayoutInstance.id
+        }
+        else render error: 404
+    }
+
     def getReadoutSecurityTokensFromPlateSecurityToken = {
         def plateInstance = Plate.findByUuid(params.id)
-        if(accessAllowed(params.id, plateInstance)) render plateInstance.readouts.collect{it.uuid} as JSON
+        if(accessAllowed(params.id, plateInstance)){
+            def tokens = plateInstance.readouts.collect{securityTokenService.getSecurityToken(it)}
+            render tokens as JSON
+        }
+        else render status: 403
+    }
+
+    def getPlateLayoutSecurityTokenFromPlateSecurityToken = {
+        def plateInstance = Plate.findByUuid(params.id)
+        if(accessAllowed(params.id, plateInstance)){
+            def token = [securityTokenService.getSecurityToken(plateInstance.plateLayout)]
+            render token as JSON
+        }
         else render status: 403
     }
 
@@ -138,6 +173,47 @@ class ReadoutExportController {
                     property "pl.replicate"
                     property "playout.id"
                     property "measuredValue"
+                }
+                order('row', 'desc')
+                order('col', 'asc')
+            }
+
+            ObjectMapper mapper = new ObjectMapper()
+            def jsonResult = mapper.writeValueAsString(result)
+
+            response.contentType = "text/json"
+            render jsonResult
+        }
+        else{
+            render status: 403
+        }
+    }
+
+    def exportPlateLayoutAsJSON = {
+        def plateLayoutInstance = PlateLayout.get(params.id)
+
+        if(accessAllowed(params.securityToken, plateLayoutInstance)){
+            def criteria = WellLayout.createCriteria()
+            def result = criteria.list {
+                eq("plateLayout.id", params.long("id"))
+                createAlias('plateLayout', 'pl', CriteriaSpecification.LEFT_JOIN)
+                createAlias('sample', 'smpl', CriteriaSpecification.LEFT_JOIN)
+                createAlias('numberOfCellsSeeded', 'ncs', CriteriaSpecification.LEFT_JOIN)
+                createAlias('cellLine', 'cl', CriteriaSpecification.LEFT_JOIN)
+                createAlias('treatment', 'tr', CriteriaSpecification.LEFT_JOIN)
+                createAlias('inducer', 'ind', CriteriaSpecification.LEFT_JOIN)
+                projections {
+                    property "id"
+                    property "pl.id"
+                    property "row"
+                    property "col"
+                    property "ncs.name"
+                    property "cl.name"
+                    property "ind.name"
+                    property "ind.concentration"
+                    property "tr.name"
+                    property "smpl.name"
+                    property "smpl.controlType"
                 }
                 order('row', 'desc')
                 order('col', 'asc')

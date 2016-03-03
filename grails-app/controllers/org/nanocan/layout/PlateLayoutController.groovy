@@ -44,11 +44,12 @@ class PlateLayoutController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index() {
-        redirect(action: "list", params: params)
+    def showWellTooltip(){
+
+        render template: "wellPreview", model: [wellLayoutInstance: WellLayout.get(params.long("id"))]
     }
 
-    def list() {
+    def index() {
         //deal with max
         if(!params.max && session.maxPlateLayout) params.max = session.maxPlateLayout
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
@@ -126,7 +127,7 @@ class PlateLayoutController {
         def plateLayoutInstance = PlateLayout.get(params.id)
         if (!plateLayoutInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'plateLayout.label', default: 'PlateLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
         flash.message = flash.message
@@ -138,7 +139,7 @@ class PlateLayoutController {
         def plateLayoutInstance = PlateLayout.get(params.id)
         if (!plateLayoutInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'plateLayout.label', default: 'PlateLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -161,7 +162,7 @@ class PlateLayoutController {
         def plateLayoutInstance = PlateLayout.get(params.id)
         if (!plateLayoutInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'plateLayout.label', default: 'PlateLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -194,7 +195,7 @@ class PlateLayoutController {
         def plateLayoutInstance = PlateLayout.get(params.id)
         if (!plateLayoutInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'plateLayout.label', default: 'PlateLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -202,7 +203,7 @@ class PlateLayoutController {
             experimentService.updateExperiments(plateLayoutInstance, [])
             plateLayoutInstance.delete(flush: true)
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'plateLayout.label', default: 'PlateLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'plateLayout.label', default: 'PlateLayout'), params.id])

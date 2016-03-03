@@ -12,8 +12,8 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-        width: 300px;
-        height: 200px;
+        width: 600px;
+        height: 400px;
     }
     </style>
 
@@ -29,8 +29,8 @@
 
     var chartParams = {
         "dom": "dynamicHeatmap",
-        "width": "300",
-        "height": "200",
+        "width": "600",
+        "height": "400",
         "layers": [
                 {
                     "x": {"var":"Column"},

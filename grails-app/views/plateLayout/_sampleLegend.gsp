@@ -3,7 +3,7 @@
 <head>
     <style>
     #draggableLegend { width:290px; padding: 0.5em; background-color: #ffffff; position: fixed;
-        z-index: 10000; opacity: 0.95; top: 150px; left: 50px;
+        z-index: 10000; opacity: 0.95; top: 150px; left: 50px; overflow: auto; height: 400px;
         border-color: #e6e6e6; border-bottom-width: 1px; border-style: solid;}
     </style>
     <r:script>

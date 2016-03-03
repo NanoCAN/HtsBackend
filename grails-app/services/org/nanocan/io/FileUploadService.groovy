@@ -46,28 +46,35 @@ class FileUploadService {
     /*
      * Creates the actual result file on the hard drive + a corresponding domain object
      */
-    def createResultFile(def resultFile, String type)
+    def createResultFile(resultFile, String type, String originalFileName)
     {
-        if(!resultFile.empty) {
-
-            def uuid = randomUUID() as String
-            String basePath = grailsApplication.config?.upload?.directory?:""
-            def filePath = basePath + uuid + "." + FilenameUtils.getExtension(resultFile.originalFilename as String)
-            resultFile.transferTo( new File(filePath) )
-
-            def newResultFile = new ResultFile(fileType: type, fileName: (resultFile.originalFilename as String), filePath: filePath, dateUploaded:  new Date())
-
-            if(newResultFile.save(flush: true))
-            {
-                log.info "saving of file ${filePath} was successful"
-                return newResultFile
-            }
-
-            else
-            {
-                log.warn "could not save file to ${filePath}."
+        if(resultFile instanceof CommonsMultipartFile){
+            if(resultFile.empty){
+                log.error "file was empty"
                 return null
             }
+            else originalFileName = resultFile.originalFilename
+        }
+
+        def uuid = randomUUID() as String
+        String basePath = grailsApplication?.config?.upload?.directory?:""
+        def filePath = basePath + uuid + "." + FilenameUtils.getExtension(originalFileName as String)
+
+        if(resultFile instanceof CommonsMultipartFile) resultFile.transferTo( new File(filePath) )
+        else resultFile.renameTo( new File(filePath) )
+
+        def newResultFile = new ResultFile(fileType: type, fileName: (originalFileName as String), filePath: filePath, dateUploaded:  new Date())
+
+        if(newResultFile.save(flush: true))
+        {
+            log.info "saving of file ${filePath} was successful"
+            return newResultFile
+        }
+
+        else
+        {
+            log.warn "could not save file to ${filePath}."
+            return null
         }
     }
 

@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.layout.SpotType; org.nanocan.layout.NumberOfCellsSeeded; org.nanocan.layout.Treatment; org.nanocan.layout.Inducer; org.nanocan.layout.CellLine" %>
+<%@ page import="org.nanocan.layout.Sample; org.nanocan.layout.SpotType; org.nanocan.layout.NumberOfCellsSeeded; org.nanocan.layout.Treatment; org.nanocan.layout.Inducer; org.nanocan.layout.CellLine" %>
 
 <head>
     <r:require module="colorPicker"/>
@@ -22,6 +22,7 @@
     <g:elseif test="${sampleProperty == 'treatment'}"><g:set var="samplePropertyList" value="${Treatment.list()}"/></g:elseif>
     <g:elseif test="${sampleProperty == 'numberOfCellsSeeded'}"><g:set var="samplePropertyList" value="${NumberOfCellsSeeded.list()}"/></g:elseif>
     <g:elseif test="${sampleProperty == 'spotType'}"><g:set var="samplePropertyList" value="${SpotType.list()}"/></g:elseif>
+    <g:elseif test="${sampleProperty == 'controlSamples'}"><g:set var="samplePropertyList" value="${Sample.findAllByControl(true)}"/></g:elseif>
     <thead>
     <tr><th>${sampleProperty.toString().capitalize()}</th><th>Color</th></tr>
     </thead>

@@ -65,7 +65,7 @@ class Plate implements Serializable{
         barcode unique:  true
         name nullable: true, blank: false, unique: true
         plateType nullable: true
-        format inList: ["96-well", "384-well"], blank: false, editable: false
+        format inList: ["96-well", "384-well", "1536-well"], blank: false, editable: false
         //we can only have one replicate x for each library plate y in experiment z
         replicate(unique: ['experiment', 'plateLayout'])
         rows editable: false
@@ -87,6 +87,11 @@ class Plate implements Serializable{
         {
             cols = 24
             rows = 16
+        }
+        else if(format == "1536-well")
+        {
+            cols = 48
+            rows = 32
         }
     }
 

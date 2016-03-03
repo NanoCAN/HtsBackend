@@ -89,7 +89,6 @@
 <div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'resultImage', 'error')} ">
     <label for="resultImage">
         <g:message code="slide.resultImage.label" default="Result Image" />
-        <span class="required-indicator">*</span>
     </label>
     <div style="float:right; padding-right: 120px;"><table><tr><td>Choose existing file: </td>
         <td> <input type="text" id="resultImageAjax"></td></tr>
@@ -100,7 +99,6 @@
 <div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'protocol', 'error')} ">
     <label for="protocol">
         <g:message code="slide.protocol.label" default="Experiment Protocol" />
-        <span class="required-indicator">*</span>
     </label>
     <div style="float:right; padding-right: 120px;"><table><tr><td>Choose existing file: </td>
         <td> <input type="text" id="protocolAjax"></td></tr>

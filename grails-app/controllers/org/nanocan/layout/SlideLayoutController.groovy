@@ -49,16 +49,14 @@ class SlideLayoutController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index() {
-        redirect(action: "list", params: params)
-    }
 
     def showSpotTooltip(){
 
         render template: "spotPreview", model: [layoutSpotInstance: LayoutSpot.get(params.long("id"))]
     }
 
-    def list() {
+    def index() {
+
         //deal with max
         if(!params.max && session.maxSlideLayout) params.max = session.maxSlideLayout
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
@@ -214,7 +212,7 @@ class SlideLayoutController {
         def slideLayoutInstance = SlideLayout.get(params.id)
         if (!slideLayoutInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'slideLayout.label', default: 'SlideLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -235,7 +233,7 @@ class SlideLayoutController {
         def slideLayoutInstance = SlideLayout.get(params.id)
         if (!slideLayoutInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'slideLayout.label', default: 'SlideLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -250,7 +248,7 @@ class SlideLayoutController {
         def slideLayoutInstance = SlideLayout.get(params.id)
         if (!slideLayoutInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'slideLayout.label', default: 'SlideLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -285,7 +283,7 @@ class SlideLayoutController {
         def slideLayoutInstance = SlideLayout.get(params.id)
         if (!slideLayoutInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'slideLayout.label', default: 'SlideLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -307,7 +305,7 @@ class SlideLayoutController {
             slideLayoutInstance.delete(flush:true)
 
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'slideLayout.label', default: 'SlideLayout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'slideLayout.label', default: 'SlideLayout'), params.id])

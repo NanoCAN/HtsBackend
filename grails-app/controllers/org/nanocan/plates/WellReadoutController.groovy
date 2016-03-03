@@ -36,10 +36,6 @@ class WellReadoutController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
-    }
-
-    def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [wellReadoutInstanceList: WellReadout.list(params), wellReadoutInstanceTotal: WellReadout.count()]
     }
@@ -63,7 +59,7 @@ class WellReadoutController {
         def wellReadoutInstance = WellReadout.get(params.id)
         if (!wellReadoutInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'wellReadout.label', default: 'WellReadout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -74,7 +70,7 @@ class WellReadoutController {
         def wellReadoutInstance = WellReadout.get(params.id)
         if (!wellReadoutInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'wellReadout.label', default: 'WellReadout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -85,7 +81,7 @@ class WellReadoutController {
         def wellReadoutInstance = WellReadout.get(params.id)
         if (!wellReadoutInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'wellReadout.label', default: 'WellReadout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -115,14 +111,14 @@ class WellReadoutController {
         def wellReadoutInstance = WellReadout.get(params.id)
         if (!wellReadoutInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'wellReadout.label', default: 'WellReadout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
         try {
             wellReadoutInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'wellReadout.label', default: 'WellReadout'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'wellReadout.label', default: 'WellReadout'), params.id])

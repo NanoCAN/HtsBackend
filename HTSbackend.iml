@@ -20,6 +20,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map />
+        <naming-strategy-map />
       </configuration>
     </facet>
   </component>
@@ -61,6 +62,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="grails-2.2.3" level="application" />
+    <orderEntry type="library" name="grails-2.5.3" level="application" />
   </component>
 </module>
-

@@ -29,9 +29,7 @@
  */
 package org.nanocan.io
 
-import groovy.sql.Sql
 import org.nanocan.plates.WellReadout
-
 
 class ReadoutImportService {
 
@@ -70,9 +68,11 @@ class ReadoutImportService {
                 //compute well position if necessary
                 if(columnMap.wellPosition != null)
                 {
-                    def wellPosition = currentLine[columnMap.wellPosition]
-                    newWellReadout.row = Character.getNumericValue(wellPosition.toString().charAt(0))-9
-                    newWellReadout.col = Integer.valueOf(wellPosition.toString().substring(1, wellPosition.toString().length()))
+                    String wellPosition = currentLine[columnMap.wellPosition]
+                    wellPosition = wellPosition.replaceAll (/"/, '')
+
+                    newWellReadout.row = Character.getNumericValue(wellPosition.charAt(0))-9
+                    newWellReadout.col = Integer.valueOf(wellPosition.substring(1))
                 }
 
                 objectInstance.addToWells(newWellReadout)
@@ -80,16 +80,16 @@ class ReadoutImportService {
 
             }catch(ArrayIndexOutOfBoundsException e)
             {
-                log.info "could not parse line, assuming the end is reached."
+                log.debug "could not parse line, assuming the end is reached."
             }
         }
 
         //clean up
         scanner.close()
 
-        nextStep = fileImportService.initializeProgressBar(wellReadouts, progressId)
+        if(progressId) nextStep = fileImportService.initializeProgressBar(wellReadouts, progressId)
 
-        objectInstance.save(flush:true)
+        objectInstance.save(flush:true, failOnError: true)
 
         return objectInstance
     }

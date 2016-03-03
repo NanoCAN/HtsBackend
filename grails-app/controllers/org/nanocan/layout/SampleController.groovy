@@ -41,7 +41,7 @@ class SampleController {
 
         def controls = Sample.findAllByControl(true)
 
-        render(view: "list", model : [sampleInstanceList: controls, sampleInstanceTotal: controls.size() ])
+        render(view: "index", model : [sampleInstanceList: controls, sampleInstanceTotal: controls.size() ])
     }
 
     def ajaxSampleFinder = {

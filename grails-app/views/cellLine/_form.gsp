@@ -45,7 +45,7 @@
 <div class="fieldcontain ${hasErrors(bean: cellLineInstance, field: 'name', 'error')} ">
     <label for="name">
         <g:message code="cellLine.name.label" default="Name"/>
-
+        <span class="required-indicator">*</span>
     </label>
     <g:textField name="name" value="${cellLineInstance?.name}"/>
 </div>
@@ -53,7 +53,7 @@
 <div style="width:75px; padding-left:210px;" class="fieldcontain ${hasErrors(bean: cellLineInstance, field: 'color', 'error')} ">
     <label for="color">
         <g:message code="cellLine.color.label" default="Color"/>
-
+        <span class="required-indicator">*</span>
     </label>
     <div id="colorPickDiv" style="float:right; background-color: ${cellLineInstance?.color}; border: 1px solid; width:25px; height:25px;">
         <input type="hidden" id="colorInput" name="color" value="${cellLineInstance?.color}">

@@ -12,6 +12,8 @@
 <g:else>
     <g:render plugin="HTSbackend" template="sampleLegend" model="${[layoutId: plateLayout.id]}"></g:render>
 </g:else>
+<g:render template="wellTooltip"/>
+
 
 <g:set var="well" value="${0}"/>
 <g:set var="wellList" value="${wells.toList()}"/>
@@ -32,7 +34,7 @@
         <div class="container">
             <ul class="nav">
                 <g:render template="/templates/navmenu"></g:render>
-                <li><g:link class="list" action="list"><g:message code="default.list.label"
+                <li><g:link class="list" action="index"><g:message code="default.list.label"
                                                                   args="[entityName]"/></g:link></li>
                 <li><g:link class="create" action="create"><g:message code="default.new.label"
                                                                       args="[entityName]"/></g:link></li>
@@ -134,6 +136,42 @@
                         onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
     </fieldset>
 </g:form>
+
+<r:script type="text/javascript">
+    var allTDs
+    var selColor = "";
+    var selName = "";
+    var selId = "";
+    var buttondown = -1;
+    var cellstartr, cellstartc, cellendr, cellendc;
+    var tableName
+    var unsavedChanges = false;
+    var selectionMode = "normal";
+    var sampleProperty = "${sampleProperty.toString().capitalize()}";
+
+    $("td").bind("mouseover", function(event) {
+        if(true) {
+            var well = $(this);
+            var timer = window.setTimeout(function() {
+                var id = well.find("input").attr("name");
+                ${remoteFunction(controller: "plateLayout", action: "showWellTooltip",
+            params: "\'id=\' + id", update: "draggableWellTooltip")}
+
+                $("#draggableWellTooltip").show();
+            }, 800)
+            well.data('timerid', timer);
+        }
+    }).bind("mouseout", function() {
+        if(true) {
+            var timerid = $(this).data('timerid');
+            if(timerid != null)
+            {
+                window.clearTimeout(timerid);
+            }
+            $("#draggableWellTooltip").hide();
+        }
+    });
+</r:script>
 
 <r:script>
 

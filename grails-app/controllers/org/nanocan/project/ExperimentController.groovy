@@ -40,10 +40,6 @@ class ExperimentController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
-    }
-
-    def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [experimentInstanceList: Experiment.list(params), experimentInstanceTotal: Experiment.count()]
     }
@@ -56,7 +52,6 @@ class ExperimentController {
     def save() {
         params.createdBy = springSecurityService.currentUser
         params.lastUpdatedBy = springSecurityService.currentUser
-
         def experimentInstance = new Experiment(params)
         if (!experimentInstance.save(flush: true)) {
             render(view: "create", model: [experimentInstance: experimentInstance])
@@ -72,7 +67,7 @@ class ExperimentController {
         def experimentInstance = Experiment.get(params.id)
         if (!experimentInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'experiment.label', default: 'Experiment'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -92,7 +87,7 @@ class ExperimentController {
         def experimentInstance = Experiment.get(params.id)
         if (!experimentInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'experiment.label', default: 'Experiment'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -103,7 +98,7 @@ class ExperimentController {
         def experimentInstance = Experiment.get(params.id)
         if (!experimentInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'experiment.label', default: 'Experiment'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -135,14 +130,14 @@ class ExperimentController {
         def experimentInstance = Experiment.get(params.id)
         if (!experimentInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'experiment.label', default: 'Experiment'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
         try {
             experimentInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'experiment.label', default: 'Experiment'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'experiment.label', default: 'Experiment'), params.id])

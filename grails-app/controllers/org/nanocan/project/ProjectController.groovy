@@ -42,10 +42,6 @@ class ProjectController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
-    }
-
-    def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [projectInstanceList: Project.list(params), projectInstanceTotal: Project.count()]
     }
@@ -73,7 +69,7 @@ class ProjectController {
         def projectInstance = Project.get(params.id)
         if (!projectInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'project.label', default: 'Project'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -84,7 +80,7 @@ class ProjectController {
         def projectInstance = Project.get(params.id)
         if (!projectInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'project.label', default: 'Project'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -95,7 +91,7 @@ class ProjectController {
         def projectInstance = Project.get(params.id)
         if (!projectInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'project.label', default: 'Project'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -139,14 +135,14 @@ class ProjectController {
         def projectInstance = Project.get(params.id)
         if (!projectInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'project.label', default: 'Project'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
         try {
             projectInstance.delete(flush: true)
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'project.label', default: 'Project'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'project.label', default: 'Project'), params.id])

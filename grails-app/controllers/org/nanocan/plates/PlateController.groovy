@@ -41,7 +41,7 @@ class PlateController {
 
     }
 
-    def list() {
+    def index() {
         //deal with max
         if(!params.max && session.maxPlate) params.max = session.maxPlate
         params.max = Math.min(params.max ? params.int('max') : 10, 100)

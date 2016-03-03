@@ -39,6 +39,11 @@ class Identifier implements Serializable{
 
     static constraints = {
         name()
-        type inList: ["miRBase", "NCBI"]
+        type inList: ["miRBase mature", "miRBase miRNA", "Entrez", "RefSeq", "Ensembl", "Uniprot", "Other", "PubChem"]
+    }
+
+
+    String toString(){
+        name
     }
 }

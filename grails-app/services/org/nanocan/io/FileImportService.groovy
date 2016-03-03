@@ -58,9 +58,11 @@ class FileImportService {
      * @param slideInstance
      * @return
      */
-    def getSheets(def slideInstance)
+    def getSheets(def objectInstance)
     {
-        return xlsxImportService.getSheets(slideInstance.resultFile.filePath)
+        if(objectInstance instanceof File)
+            return xlsxImportService.getSheets(objectInstance.path)
+        else return xlsxImportService.getSheets(objectInstance.resultFile.filePath)
     }
 
     def convertCSV2(String content)
@@ -123,7 +125,6 @@ class FileImportService {
 
         //reading and parsing header
         def header = scanner.nextLine()
-
         scanner.close()
 
         header = header.split(',')

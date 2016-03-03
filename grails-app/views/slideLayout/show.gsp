@@ -1,5 +1,5 @@
 
-<%@ page import="org.nanocan.plates.Readout; org.nanocan.rppa.scanner.Slide; org.nanocan.layout.SlideLayout" %>
+<%@ page import="org.nanocan.plates.Readout; org.nanocan.layout.SlideLayout" %>
 <!doctype html>
 <html>
 	<head>
@@ -25,7 +25,7 @@
             <div class="container">
                 <ul class="nav">
                     <g:render template="/templates/navmenu"></g:render>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
+				<li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
                 </ul>
             </div>

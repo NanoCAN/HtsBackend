@@ -29,7 +29,7 @@
  */
 package org.nanocan.security
 
-class Person {
+class Person implements Serializable{
 
 	transient springSecurityService
     transient hasBeforeUpdate = false

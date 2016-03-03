@@ -30,6 +30,7 @@
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
+grails.project.dependency.resolver = "maven"
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
@@ -49,6 +50,8 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+        mavenRepo "http://repo.grails.org/grails/repo/"
+
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
@@ -65,20 +68,20 @@ grails.project.dependency.resolution = {
 
         //https connection with self-signed certificates
         compile 'com.github.kevinsawicki:http-request:5.4.1'
+
     }
 
     plugins {
-        build(":tomcat:$grailsVersion",
-              ":release:2.2.1",
-              ":rest-client-builder:1.0.3") {
-            export = false
-        }
+        build   ":tomcat:7.0.52"
         compile ":jquery-ui:1.10.3"
 
         compile ":jprogress:0.2"
-        compile ":spring-security-core:1.2.7.3"
+        compile ":spring-security-core:1.2.7.4"
         compile ":spring-security-cas:1.0.5"
-        compile ":spring-security-eventlog:0.2"
+        //compile ":spring-security-eventlog:0.2"
         compile ":webxml:1.4.1"
+        compile ':webflow:2.1.0'
+        compile "org.grails.plugins:scaffolding:2.1.2"
+
     }
 }

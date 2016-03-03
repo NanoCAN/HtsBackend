@@ -32,7 +32,7 @@ package org.nanocan.plates
 import org.nanocan.file.PlateResultFileConfig
 import org.nanocan.file.ResultFile
 
-class Readout {
+class Readout implements Serializable{
 
     static belongsTo = [plate: Plate]
 

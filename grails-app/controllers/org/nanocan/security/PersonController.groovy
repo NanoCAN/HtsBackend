@@ -77,7 +77,7 @@ class PersonController {
         def personInstance = Person.get(params.id)
         if (!personInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -90,7 +90,7 @@ class PersonController {
         def personInstance = Person.get(params.id)
         if (!personInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -107,7 +107,7 @@ class PersonController {
 
         if (!personInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -139,7 +139,7 @@ class PersonController {
         def personInstance = Person.get(params.id)
         if (!personInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
             return
         }
 
@@ -149,7 +149,7 @@ class PersonController {
             personInstance.delete(flush: true)
 
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'person.label', default: 'Person'), params.id])
-            redirect(action: "list")
+            redirect(action: "index")
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'person.label', default: 'Person'), params.id])

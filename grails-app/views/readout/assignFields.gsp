@@ -2,28 +2,7 @@
 <g:jprogressDialog message="Adding readout data to database..." progressId="${progressId}" trigger="buttonAddSpots" />
 
 <div style="padding:50px;">
-    <h3>Match columns and database properties:</h3><br/><br/>
-
-    <table>
-        <g:set var="colCounter" value="${0}"/>
-        <g:each in="${header}" var="col">
-
-            <g:if test="${!col.equals("")}">
-            <tr>
-                <td>
-                    ${col}
-                </td>
-                <td>
-                    <g:select name="column_${colCounter}" noSelection="['':'Do not use']" value="${matchingMap[col]}" from="${readoutProperties}"/>
-                </td>
-            </tr>
-            </g:if>
-
-
-            <g:set var="colCounter" value="${++colCounter}" />
-        </g:each>
-
-    </table>
+    <g:render template="assignFieldsTemplate" model="${[header: header]}"/>
 
     <fieldset class="buttons">
         <g:submitToRemote onLoading="\$('#formDiv').hide() ; \$('#updateDiv').hide();" onSuccess="\$('#updateDiv').show();"
