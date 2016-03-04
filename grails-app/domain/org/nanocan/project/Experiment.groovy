@@ -47,6 +47,9 @@ class Experiment implements Serializable{
 
     static searchable = true
 
+    static mapping = {
+        description type: "text"
+    }
     static hasMany = [slideLayouts: SlideLayout, plateLayouts: PlateLayout]
     static belongsTo = [project: Project]
 

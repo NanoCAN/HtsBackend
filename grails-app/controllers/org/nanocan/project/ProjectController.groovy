@@ -39,7 +39,7 @@ class ProjectController {
     //dependencies
     def springSecurityService
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
 
     def index() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)

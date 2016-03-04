@@ -46,6 +46,9 @@ class Project implements Serializable {
 
     static hasMany = [experiments: Experiment]
 
+    static mapping = {
+        projectDescription type: "text"
+    }
     static constraints = {
 
         projectTitle unique:true

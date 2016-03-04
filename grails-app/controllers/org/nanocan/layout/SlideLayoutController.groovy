@@ -47,7 +47,7 @@ class SlideLayoutController {
 	def clipboardParsingService
     def layoutImportService
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
 
 
     def showSpotTooltip(){

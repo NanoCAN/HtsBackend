@@ -42,7 +42,7 @@ class PlateLayoutController {
     def experimentService
     def springSecurityService
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
 
     def showWellTooltip(){
 
