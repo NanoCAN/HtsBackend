@@ -82,6 +82,8 @@ grails.project.dependency.resolution = {
         compile ":webxml:1.4.1"
         compile ':webflow:2.1.0'
         compile "org.grails.plugins:scaffolding:2.1.2"
+        runtime ":database-migration:1.4.1"
+
 
     }
 }
