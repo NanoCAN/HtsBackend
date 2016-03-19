@@ -30,9 +30,34 @@
 package org.nanocan.layout
 
 import grails.plugins.springsecurity.Secured
+import org.springframework.dao.DataIntegrityViolationException
 
 @Secured(['ROLE_USER'])
 class DilutionController {
 
     def scaffold = true
+
+    def delete() {
+        def dilutionInstance = Dilution.get(params.id)
+        if (!dilutionInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'dilution.label', default: 'Dilution'), params.id])
+            redirect(action: "index")
+            return
+        }
+        else if(LayoutSpot.findByDilutionFactor(dilutionInstance)){
+            flash.message = "Dilution can not be deleted as long as it is used."
+            redirect(action: "show", id: params.id)
+            return
+        }
+
+        try {
+            dilutionInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'dilution.label', default: 'Dilution'), params.id])
+            redirect(action: "index")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'dilution.label', default: 'Dilution'), params.id])
+            redirect(action: "show", id: params.id)
+        }
+    }
 }

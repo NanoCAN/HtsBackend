@@ -97,7 +97,7 @@
         </li>
 
     </ol>
-    <g:form>
+    <g:form method="DELETE">
         <fieldset class="buttons">
             <g:hiddenField name="id" value="${personInstance?.id}"/>
             <g:link class="edit" action="edit" id="${personInstance?.id}"><g:message code="default.button.edit.label"

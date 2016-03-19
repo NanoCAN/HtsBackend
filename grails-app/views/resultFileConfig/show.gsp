@@ -176,7 +176,7 @@
         </g:if>
 
     </ol>
-    <g:form>
+    <g:form method="DELETE">
         <fieldset class="buttons">
             <g:hiddenField name="id" value="${resultFileConfigInstance?.id}"/>
             <g:link class="edit" action="edit" id="${resultFileConfigInstance?.id}"><g:message

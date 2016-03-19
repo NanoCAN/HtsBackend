@@ -30,9 +30,34 @@
 package org.nanocan.layout
 
 import grails.plugins.springsecurity.Secured
+import org.springframework.dao.DataIntegrityViolationException
 
 @Secured(['ROLE_USER'])
 class TreatmentController {
 
     def scaffold = true
+
+    def delete() {
+        def treatmentInstance = Treatment.get(params.id)
+        if (!treatmentInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'treatment.label', default: 'Treatment'), params.id])
+            redirect(action: "index")
+            return
+        }
+        else if(WellLayout.findByTreatment(treatmentInstance) || LayoutSpot.findByTreatment(treatmentInstance)){
+            flash.message = "Treatment can not be deleted as long as it is used."
+            redirect(action: "show", id: params.id)
+            return
+        }
+
+        try {
+            treatmentInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'treatment.label', default: 'Treatment'), params.id])
+            redirect(action: "index")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'treatment.label', default: 'Treatment'), params.id])
+            redirect(action: "show", id: params.id)
+        }
+    }
 }

@@ -48,6 +48,16 @@
 <h1 style="padding-left:20px;">Modify ${sampleProperty.toString().capitalize()} for layout ${plateLayout}</h1>
 
 <div style="margin-left: 20px; margin-right:20px; padding:10px; background-color: #e0e0e0">
+    <div style="float:right;">
+        Plates using this layout:
+        <ul>
+            <g:each in="${plates}" var="plate">
+                <li><g:link controller="plate" action="show" id="${plate.id}">${plate}</g:link></li>
+            </g:each>
+        </ul>
+    </div>
+
+    <div>
     <g:message code="slideLayout.experiments.label" default="Experiments:" />
     <ul class="property-list">
         <g:each in="${selectedExperiments}">
@@ -63,7 +73,10 @@
         <g:select name="experiment" from="${experiments}" optionKey="id" optionValue="title"/>
         <g:submitButton name="add" value="add"/>
     </g:form>
+    </div>
+
 </div>
+
 
 <div class="message" id="message" role="status">${flash.message?:"Select cells to change the layout"}</div>
 
@@ -126,7 +139,7 @@
     <div style="padding-left:20px;padding-bottom: 20px;"><input type="submit" value="Save changes" name="layoutUpdateButton"/></div>
 </g:formRemote>
 
-<g:form>
+<g:form method="DELETE">
     <fieldset class="buttons">
         <g:hiddenField name="id" value="${plateLayout?.id}"/>
         <g:link class="edit" action="edit" id="${plateLayout?.id}"><g:message

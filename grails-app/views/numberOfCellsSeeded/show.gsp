@@ -47,7 +47,7 @@
 				</g:if>
 			
 			</ol>
-			<g:form>
+			<g:form method="DELETE">
 				<fieldset class="buttons">
 					<g:hiddenField name="id" value="${numberOfCellsSeededInstance?.id}" />
 					<g:link class="edit" action="edit" id="${numberOfCellsSeededInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>

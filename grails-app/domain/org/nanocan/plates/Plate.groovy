@@ -56,6 +56,7 @@ class Plate implements Serializable{
     static searchable = true
 
     static mapping = {
+        readouts cascade: "all-delete-orphan"
     }
 
     static hasMany = [readouts: Readout]

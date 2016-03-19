@@ -29,7 +29,33 @@
  */
 package org.nanocan.layout
 
+import org.springframework.dao.DataIntegrityViolationException
+
 class NumberOfCellsSeededController {
 
     def scaffold = true
+
+    def delete() {
+        def numberOfCellsSeededInstance = NumberOfCellsSeeded.get(params.id)
+        if (!numberOfCellsSeededInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'numberOfCellsSeeded.label', default: 'NumberOfCellsSeeded'), params.id])
+            redirect(action: "index")
+            return
+        }
+        else if(WellLayout.findByNumberOfCellsSeeded(numberOfCellsSeededInstance) || LayoutSpot.findByNumberOfCellsSeeded(numberOfCellsSeededInstance)){
+            flash.message = "NumberOfCellsSeeded can not be deleted as long as it is used."
+            redirect(action: "show", id: params.id)
+            return
+        }
+
+        try {
+            numberOfCellsSeededInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'numberOfCellsSeeded.label', default: 'NumberOfCellsSeeded'), params.id])
+            redirect(action: "index")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'numberOfCellsSeeded.label', default: 'NumberOfCellsSeeded'), params.id])
+            redirect(action: "show", id: params.id)
+        }
+    }
 }

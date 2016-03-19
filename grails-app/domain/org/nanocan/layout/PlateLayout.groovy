@@ -48,6 +48,10 @@ class PlateLayout implements Serializable{
     Person createdBy
     Person lastUpdatedBy
 
+    static mapping = {
+        plates cascade: "all-delete-orphan"
+    }
+
     static constraints = {
         uuid nullable: true
         name blank: false, unique:  true, nullable: false

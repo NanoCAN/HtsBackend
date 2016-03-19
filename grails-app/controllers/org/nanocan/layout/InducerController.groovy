@@ -30,9 +30,34 @@
 package org.nanocan.layout
 
 import grails.plugins.springsecurity.Secured
+import org.springframework.dao.DataIntegrityViolationException
 
 @Secured(['ROLE_USER'])
 class InducerController {
 
     def scaffold = true
+
+    def delete() {
+        def inducerInstance = Inducer.get(params.id)
+        if (!inducerInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'inducer.label', default: 'Inducer'), params.id])
+            redirect(action: "index")
+            return
+        }
+        else if(WellLayout.findByInducer(inducerInstance) || LayoutSpot.findByInducer(inducerInstance)){
+            flash.message = "Inducer can not be deleted as long as it is used."
+            redirect(action: "show", id: params.id)
+            return
+        }
+
+        try {
+            inducerInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'inducer.label', default: 'Inducer'), params.id])
+            redirect(action: "index")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'inducer.label', default: 'Inducer'), params.id])
+            redirect(action: "show", id: params.id)
+        }
+    }
 }

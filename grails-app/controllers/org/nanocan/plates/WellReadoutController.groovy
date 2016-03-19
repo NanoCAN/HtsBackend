@@ -33,7 +33,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class WellReadoutController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)

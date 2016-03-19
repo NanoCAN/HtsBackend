@@ -30,16 +30,21 @@
 package org.nanocan.plates
 
 import grails.plugins.springsecurity.Secured
+import org.nanocan.layout.PlateLayout
 import org.nanocan.layout.SlideLayout
 import org.nanocan.project.Experiment
 import org.nanocan.project.Project
+import org.springframework.dao.DataIntegrityViolationException
 
 @Secured(['ROLE_USER'])
 class PlateController {
 
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
     def importReadoutData(){
 
     }
+
 
     def index() {
         //deal with max

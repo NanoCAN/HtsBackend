@@ -71,7 +71,7 @@
         </g:if>
 
     </ol>
-    <g:form>
+    <g:form method="DELETE">
         <fieldset class="buttons">
             <g:hiddenField name="id" value="${plateLayoutInstance?.id}"/>
             <g:link class="edit" action="edit" id="${plateLayoutInstance?.id}"><g:message

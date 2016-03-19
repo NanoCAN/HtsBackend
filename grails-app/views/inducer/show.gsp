@@ -78,7 +78,7 @@
         </g:if>
 
     </ol>
-    <g:form>
+    <g:form method="DELETE">
         <fieldset class="buttons">
             <g:hiddenField name="id" value="${inducerInstance?.id}"/>
             <g:link class="edit" action="edit" id="${inducerInstance?.id}"><g:message code="default.button.edit.label"

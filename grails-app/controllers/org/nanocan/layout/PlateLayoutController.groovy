@@ -42,7 +42,7 @@ class PlateLayoutController {
     def experimentService
     def springSecurityService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def showWellTooltip(){
 
@@ -198,6 +198,11 @@ class PlateLayoutController {
             redirect(action: "index")
             return
         }
+        else if(plateLayoutInstance.plates){
+            flash.message = "PlateLayout can not be deleted as long as there are associated plates."
+            redirect(action: "show", id: params.id)
+            return
+        }
 
         try {
             experimentService.updateExperiments(plateLayoutInstance, [])
@@ -225,7 +230,7 @@ class PlateLayoutController {
         def experiments = Experiment.list()
         experiments.removeAll(selectedExperiments)
 
-        [plateLayout:  plateLayoutInstance, wells: plateLayoutInstance.wells, experiments: experiments, selectedExperiments: selectedExperiments, sampleProperty: params.sampleProperty?:"cellLine"]
+        [plateLayout:  plateLayoutInstance, wells: plateLayoutInstance.wells, plates: plateLayoutInstance.plates, experiments: experiments, selectedExperiments: selectedExperiments, sampleProperty: params.sampleProperty?:"cellLine"]
     }
 
     def showAttributes(){

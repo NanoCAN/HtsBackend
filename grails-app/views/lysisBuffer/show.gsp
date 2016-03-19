@@ -77,7 +77,7 @@
         </g:if>
 
     </ol>
-    <g:form>
+    <g:form method="DELETE">
         <fieldset class="buttons">
             <g:hiddenField name="id" value="${lysisBufferInstance?.id}"/>
             <g:link class="edit" action="edit" id="${lysisBufferInstance?.id}"><g:message

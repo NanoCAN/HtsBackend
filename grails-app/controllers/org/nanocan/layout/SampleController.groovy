@@ -31,12 +31,37 @@ package org.nanocan.layout
 
 import grails.plugins.springsecurity.Secured
 import grails.converters.JSON
+import org.springframework.dao.DataIntegrityViolationException
 
 @Secured(['ROLE_USER'])
 class SampleController {
 
     def scaffold = true
 
+    def delete() {
+        def sampleInstance = Sample.get(params.id)
+        if (!sampleInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'sample.label', default: 'Sample'), params.id])
+            redirect(action: "index")
+            return
+        }
+        else if(WellLayout.findBySample(sampleInstance) || LayoutSpot.findBySample(sampleInstance)){
+            flash.message = "Sample can not be deleted as long as it is used."
+            redirect(action: "show", id: params.id)
+            return
+        }
+
+        try {
+            sampleInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'sample.label', default: 'Sample'), params.id])
+            redirect(action: "index")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'sample.label', default: 'Sample'), params.id])
+            redirect(action: "show", id: params.id)
+        }
+    }
+    
     def listControls(){
 
         def controls = Sample.findAllByControl(true)

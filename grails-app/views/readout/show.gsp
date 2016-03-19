@@ -94,7 +94,7 @@
 
             <g:include action="heatmap" id="${readoutInstance?.id}"/>
 			<g:include action="scatter" id="${readoutInstance?.id}"/>
-			<g:form>
+			<g:form method="DELETE">
 				<fieldset class="buttons">
 					<g:hiddenField name="id" value="${readoutInstance?.id}" />
 					<g:link class="edit" action="edit" id="${readoutInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>

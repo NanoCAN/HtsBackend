@@ -35,7 +35,7 @@ import grails.converters.JSON
 @Secured(['ROLE_USER'])
 class ResultFileController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def show = {
 
