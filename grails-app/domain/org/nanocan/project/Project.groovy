@@ -33,7 +33,9 @@ import org.nanocan.security.Person
 
 class Project implements Serializable {
 
-    static searchable = true
+    static searchable = {
+        experiments reference: true
+    }
 
     String projectTitle
     String projectDescription
