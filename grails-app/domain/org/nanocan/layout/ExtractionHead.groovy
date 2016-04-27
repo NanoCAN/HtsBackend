@@ -35,6 +35,10 @@ class ExtractionHead implements Serializable{
     int extractorRows
     int extractorColumns
 
+    static searchable = {
+        root false
+    }
+
     static constraints = {
     }
 

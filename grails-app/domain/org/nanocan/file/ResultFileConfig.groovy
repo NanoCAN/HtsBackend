@@ -47,6 +47,9 @@ class ResultFileConfig {
 
     int skipLines
 
+    static searchable = {
+        root false
+    }
 
     static constraints = {
         mainColCol nullable: true

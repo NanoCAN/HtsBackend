@@ -32,7 +32,9 @@ package org.nanocan.file
 class PlateResultFileConfig {
 
     String name
-
+    static searchable = {
+        root false
+    }
 
     String rowCol
     String columnCol

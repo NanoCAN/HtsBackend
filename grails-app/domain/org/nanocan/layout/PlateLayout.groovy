@@ -34,7 +34,9 @@ import org.nanocan.security.Person
 
 class PlateLayout implements Serializable{
 
-    static searchable = true
+    static searchable = {
+        except = ["wells"]
+    }
     String name
     String format
     String uuid

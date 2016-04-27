@@ -33,7 +33,9 @@ import org.nanocan.plates.Plate
 
 class LayoutSpot implements Comparable{
 
-    static searchable = true
+    static searchable = {
+        root false
+    }
 
     CellLine cellLine
     LysisBuffer lysisBuffer

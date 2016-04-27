@@ -8,7 +8,7 @@
  * Contact: 	mlist'at'health'.'sdu'.'dk
  * Web:			http://www.nanocan.org/miracle/
  * ###########################################################################
- *	
+ *
  *	This file is part of MIRACLE.
  *
  *  MIRACLE is free software: you can redistribute it and/or modify
@@ -27,21 +27,18 @@
  *
  * ############################################################################
  */
-package org.nanocan.layout
+package org.nanocan.search
 
-class Dilution implements Serializable{
+import grails.plugins.springsecurity.Secured
 
-    Double dilutionFactor
-    String color
-    static searchable = true
+class SearchController {
 
+    def elasticSearchService
 
-    static constraints = {
-        color unique:  true, validator:  {val, obj -> val != "#ffffff"}, nullable: false, blank: false
-    }
+    @Secured(['ROLE_USER'])
+    def index() {
+        def results = elasticSearchService.search("${params.query}")
 
-    String toString()
-    {
-        dilutionFactor
-    }
+        [query:params.query, total: results.total, searchResults:results.searchResults]    }
 }
+

@@ -36,6 +36,10 @@ class PersonRole implements Serializable {
 	Person person
 	Role role
 
+	static searchable = {
+		root false
+	}
+
 	boolean equals(other) {
 		if (!(other instanceof PersonRole)) {
 			return false

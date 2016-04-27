@@ -34,7 +34,9 @@ import org.nanocan.file.ResultFile
 
 class Readout implements Serializable{
 
-    static searchable = true
+    static searchable = {
+        except = ["wells"]
+    }
     static belongsTo = [plate: Plate]
 
     String typeOfReadout

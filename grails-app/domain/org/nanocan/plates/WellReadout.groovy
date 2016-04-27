@@ -34,6 +34,10 @@ class WellReadout {
     static belongsTo = [readout: Readout]
     double measuredValue
 
+    static searchable = {
+        root false
+    }
+
     int col
     int row
 

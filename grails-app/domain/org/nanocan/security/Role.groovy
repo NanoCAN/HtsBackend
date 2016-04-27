@@ -33,6 +33,10 @@ class Role {
 
 	String authority
 
+	static searchable = {
+		root false
+	}
+
 	static mapping = {
 		cache true
 	}
