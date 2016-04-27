@@ -35,7 +35,7 @@ import org.nanocan.file.ResultFile
 class Readout implements Serializable{
 
     static searchable = {
-        except = ["wells"]
+        except = ["wells", "plate"]
     }
     static belongsTo = [plate: Plate]
 

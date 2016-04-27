@@ -35,7 +35,7 @@ import java.util.zip.ZipFile
 
 class UnzipService {
 
-    def HashMap<String, File> Unpack(InputStream iStream) {
+    def HashMap<String, File> unpack(InputStream iStream) {
 
 
         def zipFile = new ZipFile(getFileFromStream(iStream, ".zip"))

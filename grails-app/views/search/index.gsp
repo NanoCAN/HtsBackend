@@ -57,7 +57,7 @@
               <li>
               <g:set var="className" value="${org.springframework.util.ClassUtils.getShortName(result.class)}" />
               <g:set var="link" value="${createLink(controller: className[0].toLowerCase() + className[1..-1], action: 'show', id: result.id)}" />
-              <div class="colorbox" style="background:${result.color?:'#fff'};"></div>
+              <div class="colorbox" style="background:${result.properties?.color?:'#fff'};"></div>
                   <a href="${link}">
                     <h3>${className}</h3>
 

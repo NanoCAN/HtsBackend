@@ -30,7 +30,6 @@
 package org.nanocan.plates
 
 import org.nanocan.file.PlateResultFileConfig
-import org.nanocan.file.ResultFile
 import org.springframework.dao.DataIntegrityViolationException
 import org.apache.commons.io.FilenameUtils
 import org.springframework.security.access.annotation.Secured
@@ -257,7 +256,6 @@ class ReadoutController {
     }
 
     def zipOptions(){
-        println params
         render template: "readoutDataForm", model: [fileEnding: params.fileEnding]
     }
 
@@ -290,7 +288,7 @@ class ReadoutController {
                     return
                 }
                 // unpack zip file
-                def unpacked = unzipService.Unpack(dataFile.getInputStream())
+                def unpacked = unzipService.unpack(dataFile.getInputStream())
                 flow.unpacked = unpacked
 
                 // get first file from zip to to read header
@@ -304,7 +302,7 @@ class ReadoutController {
                 }
             }
             on("success").to "fileSettings"
-            //on(Exception).to "handleError"
+            on(Exception).to "handleError"
         }
 
         fileSettings{
@@ -378,7 +376,7 @@ class ReadoutController {
                             def resultFileCfg // for later use
 
                             //read file content
-                            def result = readSheet(currentFile.path, flow.sheet, flow.minColRead, flow.csvType, flow.skipLines,
+                            def result = readSheet(readoutInstance.resultFile.filePath, flow.sheet, flow.minColRead, flow.csvType, flow.skipLines,
                                     flow.columnSeparator, flow.decimalSeparator, flow.thousandSeparator, resultFileCfg)
 
                             //Check if headers are identical

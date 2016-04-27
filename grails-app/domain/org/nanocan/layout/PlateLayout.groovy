@@ -35,7 +35,7 @@ import org.nanocan.security.Person
 class PlateLayout implements Serializable{
 
     static searchable = {
-        except = ["wells"]
+        except = ["wells", "plates"]
     }
     String name
     String format

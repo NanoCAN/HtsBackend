@@ -36,7 +36,9 @@ class ResultFile {
     Date dateUploaded
     String fileType
 
-    static searchable = true
+    static searchable = {
+        root false
+    }
 
     String toString()
     {

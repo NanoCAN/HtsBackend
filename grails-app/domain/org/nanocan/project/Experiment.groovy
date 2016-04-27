@@ -45,7 +45,9 @@ class Experiment implements Serializable{
     Person createdBy
     Person lastUpdatedBy
 
-    static searchable = true
+    static searchable = {
+        except = ["slideLayouts", "plateLayouts", "project"]
+    }
 
     static mapping = {
         description type: "text"
@@ -54,7 +56,6 @@ class Experiment implements Serializable{
     static belongsTo = [project: Project]
 
     static constraints = {
-
         title unique:true
         firstDayOfTheExperiment nullable: true
     }
