@@ -48,8 +48,20 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
-
-    warn   'org.mortbay.log'
+    warn   'org.nanocan'
+    info   'org.nanocan'
+    /*debug   'grails.plugins.springsecurity'
+    debug   'org.codehaus.groovy.grails.plugins.springsecurity'
+    debug   'org.springframework.security'
+    debug   'org.jasig.cas.client'*/
+    debug   'org.nanocan',
+            'grails.plugins.springsecurity',
+            'grails.plugin.springcache',
+            'org.codehaus.groovy.grails.plugins.springsecurity',
+            'org.apache.http.headers',
+            'grails.app.services',
+            'grails.app.domain',
+            'grails.app.controllers'
 }
 grails.views.default.codec="none" // none, html, base64
 grails.views.gsp.encoding="UTF-8"

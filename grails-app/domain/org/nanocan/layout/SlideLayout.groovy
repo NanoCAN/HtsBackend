@@ -36,7 +36,7 @@ class SlideLayout implements Serializable{
 
 
     static searchable = {
-        except = ["sampleSpots"]
+        except = ["sampleSpots", "sourcePlates", "extractionHead"]
     }
 
     Date dateCreated
