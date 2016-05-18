@@ -27,20 +27,13 @@
 			</g:if>
 			<ol class="property-list readout">
 			
-				<g:if test="${readoutInstance?.typeOfReadout}">
+				<g:if test="${readoutInstance?.assay}">
 				<li class="fieldcontain">
-					<span id="typeOfReadout-label" class="property-label"><g:message code="readout.typeOfReadout.label" default="Type Of Readout" /></span>
+					<span id="assay-label" class="property-label"><g:message code="readout.assay.label" default="Assay" /></span>
 					
-						<span class="property-value" aria-labelledby="typeOfReadout-label"><g:fieldValue bean="${readoutInstance}" field="typeOfReadout"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${readoutInstance?.assayType}">
-				<li class="fieldcontain">
-					<span id="assayType-label" class="property-label"><g:message code="readout.assayType.label" default="Assay Type" /></span>
-					
-						<span class="property-value" aria-labelledby="assayType-label"><g:fieldValue bean="${readoutInstance}" field="assayType"/></span>
+						<span class="property-value" aria-labelledby="assayType-label">
+							<g:link controller="assayType" action="show" id="${readoutInstance?.assay?.id}">${readoutInstance?.assay?.name}</g:link>
+						</span>
 					
 				</li>
 				</g:if>
@@ -54,15 +47,6 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${readoutInstance?.wavelength}">
-				<li class="fieldcontain">
-					<span id="wavelength-label" class="property-label"><g:message code="readout.wavelength.label" default="Wavelength" /></span>
-					
-						<span class="property-value" aria-labelledby="wavelength-label"><g:fieldValue bean="${readoutInstance}" field="wavelength"/></span>
-					
-				</li>
-				</g:if>
-
                 <g:if test="${readoutInstance?.resultFile}">
                     <li class="fieldcontain">
                         <span id="resultFile-label" class="property-label"><g:message code="slide.resultFile.label" default="Result File" /></span>

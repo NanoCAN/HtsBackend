@@ -27,29 +27,21 @@
 			<table>
 				<thead>
 					<tr>
-					
-						<g:sortableColumn property="typeOfReadout" title="${message(code: 'readout.typeOfReadout.label', default: 'Type Of Readout')}" />
-					
-						<g:sortableColumn property="assayType" title="${message(code: 'readout.assayType.label', default: 'Assay Type')}" />
-					
-						<th><g:message code="readout.plate.label" default="Plate" /></th>
-					
-						<g:sortableColumn property="wavelength" title="${message(code: 'readout.wavelength.label', default: 'Wavelength')}" />
-					
+						<g:sortableColumn property="plate" title="${message(code: 'readout.plate.label', default: 'Plate')}" />
+						<g:sortableColumn property="assay" title="${message(code: 'readout.assay.label', default: 'Assay')}" />
+						<g:sortableColumn property="dateOfReadout" title="${message(code: 'readout.dateOfReadout.label', default: 'Date of Readout')}" />
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${readoutInstanceList}" status="i" var="readoutInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${readoutInstance.id}">${fieldValue(bean: readoutInstance, field: "typeOfReadout")}</g:link></td>
+						<td><g:link action="show" id="${readoutInstance.id}">${fieldValue(bean: readoutInstance, field: "plate")}</g:link></td>
 					
-						<td>${fieldValue(bean: readoutInstance, field: "assayType")}</td>
-					
-						<td>${fieldValue(bean: readoutInstance, field: "plate")}</td>
-					
-						<td>${fieldValue(bean: readoutInstance, field: "wavelength")}</td>
-					
+						<td>${fieldValue(bean: readoutInstance, field: "assay")}</td>
+
+						<td><g:formatDate type="date" date="${readoutInstance.dateOfReadout}" /></td>
+
 					</tr>
 				</g:each>
 				</tbody>

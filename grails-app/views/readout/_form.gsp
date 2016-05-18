@@ -1,4 +1,4 @@
-<%@ page import="org.nanocan.plates.Plate; org.nanocan.plates.Readout" %>
+<%@ page import="org.nanocan.plates.AssayType; org.nanocan.plates.Plate; org.nanocan.plates.Readout" %>
 
 <head>
 <r:script>
@@ -42,21 +42,12 @@
     <g:jqDatePicker name="dateOfReadout" value="${readoutInstance?.dateOfReadout}"/>
 </div>
 
-
-<div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'typeOfReadout', 'error')} ">
-	<label for="typeOfReadout">
-		<g:message code="readout.typeOfReadout.label" default="Type Of Readout" />
-		
-	</label>
-	<g:select name="typeOfReadout" from="${readoutInstance.constraints.typeOfReadout.inList}" value="${readoutInstance?.typeOfReadout}" valueMessagePrefix="readout.typeOfReadout" noSelection="['': '']"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'assayType', 'error')} ">
-	<label for="assayType">
+<div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'assay', 'error')} ">
+	<label for="assay">
 		<g:message code="readout.assayType.label" default="Assay Type" />
 		
 	</label>
-	<g:select name="assayType" from="${readoutInstance.constraints.assayType.inList}" value="${readoutInstance?.assayType}" valueMessagePrefix="readout.assayType" noSelection="['': '']"/>
+	<g:select id="assay" name="assay.id" from="${org.nanocan.plates.AssayType.list()}" optionKey="id" required="" class="one-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'plate', 'error')} required">
@@ -65,14 +56,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<g:select id="plate" name="plate.id" from="${Plate.list()}" optionKey="id" required="" value="${readoutInstance?.plate?.id}" class="many-to-one"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'wavelength', 'error')} required">
-	<label for="wavelength">
-		<g:message code="readout.wavelength.label" default="Wavelength" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:field type="number" name="wavelength" required="" value="${readoutInstance.wavelength}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'resultFile', 'error')} required">

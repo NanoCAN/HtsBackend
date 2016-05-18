@@ -276,9 +276,7 @@ class ReadoutController {
             action {
                 // Grab readout settings
                 def readoutInstance = new Readout(params)
-                flow.assayType = readoutInstance.assayType
-                flow.dateOfReadout = readoutInstance.dateOfReadout
-                flow.typeOfReadout = readoutInstance.typeOfReadout
+                flow.assay = readoutInstance.assay
 
                 // Grab file and check it exists
                 def dataFile = request.getFile("zippedFile")
@@ -367,9 +365,8 @@ class ReadoutController {
                             if(!plate) throw new Exception("File ${key} could not be matched to an existing plate. Check filenames and try again. If necessary create new plates with barcodes matching the file base names (without extension).")
 
                             def readoutInstance = new Readout()
-                            readoutInstance.assayType = flow.assayType
+                            readoutInstance.assay = flow.assay
                             readoutInstance.dateOfReadout = flow.dateOfReadout
-                            readoutInstance.typeOfReadout = flow.typeOfReadout
                             readoutInstance.plate = plate
                             readoutInstance.resultFile =  fileUploadService.createResultFile(currentFile, "Result", key)
 
@@ -387,6 +384,7 @@ class ReadoutController {
                             listOfReadouts << readoutInstance
                             log.debug "Finished processing file ${key} successfully."
                         }
+                        flow.listOfReadouts = listOfReadouts.sort{it.id}
                     } catch (Exception e) {
                         //If an error occurs, rollback all changes
                         status.setRollbackOnly()

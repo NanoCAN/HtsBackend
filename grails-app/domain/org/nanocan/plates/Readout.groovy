@@ -39,9 +39,7 @@ class Readout implements Serializable{
     }
     static belongsTo = [plate: Plate]
 
-    String typeOfReadout
-    int wavelength
-    String assayType
+    AssayType assay
     static hasMany = [wells: WellReadout]
     ResultFile resultFile
     ResultFile resultImage
@@ -51,15 +49,14 @@ class Readout implements Serializable{
     String uuid
 
     static constraints = {
+        assay nullable: true
         uuid nullable: true
         lastConfig nullable: true
         resultImage nullable: true
         protocol nullable: true
-        typeOfReadout inList: ['Fluorescence']
-        assayType inList: ['Cell Titer Blue']
     }
 
     String toString(){
-        "${dateOfReadout.toString()} - ${typeOfReadout} - ${assayType}"
+        "${dateOfReadout.toString()} - ${assay?.name?:'unknown assay'}"
     }
 }

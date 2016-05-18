@@ -23,7 +23,7 @@
 
     <div class="message">Batch import completed successfully.</div>
 
-    <ul>
+    <ul style="padding-left:40px;">
     <g:each in="${listOfReadouts}" var="readout">
         <li><g:link controller="plate" action="show" id="${readout?.plate?.id}">${readout.plate}</g:link></li>
     </g:each>

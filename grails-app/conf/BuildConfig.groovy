@@ -72,18 +72,8 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        build   ":tomcat:7.0.52"
-        compile ":jquery-ui:1.10.3"
-
-        compile ":jprogress:0.2"
-        compile ":spring-security-core:1.2.7.4"
-        compile ":spring-security-cas:1.0.5"
-        //compile ":spring-security-eventlog:0.2"
         compile ":webxml:1.4.1"
-        compile ':webflow:2.1.0'
         compile "org.grails.plugins:scaffolding:2.1.2"
-        runtime ":database-migration:1.4.1"
-
 
     }
 }

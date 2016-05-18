@@ -94,7 +94,7 @@
 				<li class="fieldcontain">
 					<span id="layouts-label" class="property-label"><g:message code="experiment.layouts.label" default="Layouts" /></span>
 					
-						<g:each in="${experimentInstance.slideLayouts}" var="l">
+						<g:each in="${experimentInstance.slideLayouts.sort{it.id}}" var="l">
 						<span class="property-value" aria-labelledby="layouts-label"><g:link controller="slideLayout" action="show" id="${l.id}">${l?.encodeAsHTML()}</g:link></span>
 						</g:each>
 					
@@ -105,7 +105,7 @@
 				<li class="fieldcontain">
 					<span id="plateLayouts-label" class="property-label"><g:message code="experiment.plateLayouts.label" default="Plate Layouts" /></span>
 					
-						<g:each in="${experimentInstance.plateLayouts}" var="p">
+						<g:each in="${experimentInstance.plateLayouts.sort{it.id}}" var="p">
 						<span class="property-value" aria-labelledby="plateLayouts-label"><g:link controller="plateLayout" action="show" id="${p.id}">${p?.encodeAsHTML()}</g:link></span>
 						</g:each>
 					
