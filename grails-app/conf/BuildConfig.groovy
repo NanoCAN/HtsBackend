@@ -74,6 +74,6 @@ grails.project.dependency.resolution = {
     plugins {
         compile ":webxml:1.4.1"
         compile "org.grails.plugins:scaffolding:2.1.2"
-
+        compile "org.grails.plugins:jprogress:0.2"
     }
 }

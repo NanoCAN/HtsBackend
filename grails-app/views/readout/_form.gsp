@@ -47,7 +47,7 @@
 		<g:message code="readout.assayType.label" default="Assay Type" />
 		
 	</label>
-	<g:select id="assay" name="assay.id" from="${org.nanocan.plates.AssayType.list()}" optionKey="id" required="" class="one-to-one"/>
+	<g:select id="assay" name="assay.id" from="${AssayType.list()}" optionKey="id" optionValue="name" required="" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: readoutInstance, field: 'plate', 'error')} required">

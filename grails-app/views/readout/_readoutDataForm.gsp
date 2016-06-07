@@ -38,7 +38,7 @@
             <li class="fieldcontain">
                 <span class="property-label">Select between CSV (comma-separated) and CSV2 (semicolon-separated): </span>
                 <span class="property-value"><g:select name="csvType" from="${['CSV', 'CSV2', 'custom']}"
-                                                       onchange="${g.remoteFunction(update: 'custom_CSV_div', controller: 'slide', action: 'customCSV', params: '\'selectedType=\'+this.value')}"></g:select>
+                                                       onchange="${g.remoteFunction(update: 'custom_CSV_div', controller: 'readout', action: 'customCSV', params: '\'selectedType=\'+this.value')}"></g:select>
                 </span>
             </li>
             <div id="custom_CSV_div"/>

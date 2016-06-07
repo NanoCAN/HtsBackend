@@ -150,6 +150,12 @@ class ReadoutController {
         [readoutId: params.id]
     }
 
+    def customCSV(){
+        if(params.selectedType == "custom") render template: "customCSV"
+        else render ""
+    }
+
+
     /* Add and delete spots, import from result file */
     def addReadoutData() {
         def readoutInstance = Readout.get(params.id)
