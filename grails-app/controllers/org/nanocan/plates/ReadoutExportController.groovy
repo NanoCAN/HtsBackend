@@ -57,7 +57,7 @@ class ReadoutExportController {
         def readoutInstance = Readout.get(params.id)
 
         if(accessAllowed(params.securityToken, readoutInstance)){
-            def meta = ["id","Plate", "PlateRow", "PlateCol", "Replicate", "PlateLayout", "PlateReadout"]
+            def meta = ["id","Plate", "DateOfReadout", "PlateRow", "PlateCol", "Replicate", "PlateLayout", "PlateReadout", "AssayName", "AssayType"]
             render meta as JSON
         }
         else{
@@ -131,30 +131,6 @@ class ReadoutExportController {
         [baseUrl: baseUrl, slideInstanceId: params.id, securityToken: securityToken]
     }
 
-    def getTypeOfReadout = {
-        def readoutInstance = Readout.get(params.id)
-
-        if(accessAllowed(params.securityToken, readoutInstance))
-            render readoutInstance.typeOfReadout
-        else render error: 403
-    }
-
-    def getDateOfReadout = {
-        def readoutInstance = Readout.get(params.id)
-
-        if(accessAllowed(params.securityToken, readoutInstance))
-            render readoutInstance.dateOfReadout
-        else render error: 403
-    }
-
-    def getAssayType = {
-        def readoutInstance = Readout.get(params.id)
-
-        if(accessAllowed(params.securityToken, readoutInstance))
-            render readoutInstance.assayType
-        else render error: 403
-    }
-
     def exportAsJSON = {
         def readoutInstance = Readout.get(params.id)
 
@@ -164,15 +140,19 @@ class ReadoutExportController {
                 eq("readout.id", params.long("id"))
                 createAlias('readout', 'ro', CriteriaSpecification.LEFT_JOIN)
                 createAlias('ro.plate', 'pl', CriteriaSpecification.LEFT_JOIN)
+                createAlias('ro.assay', 'assay', CriteriaSpecification.LEFT_JOIN)
                 createAlias('pl.plateLayout', 'playout', CriteriaSpecification.LEFT_JOIN)
                 projections {
                     property "id"
                     property "pl.id"
+                    property "ro.dateOfReadout"
                     property "row"
                     property "col"
                     property "pl.replicate"
                     property "playout.id"
                     property "measuredValue"
+                    property "assay.name"
+                    property "assay.type"
                 }
                 order('row', 'desc')
                 order('col', 'asc')
