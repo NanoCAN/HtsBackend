@@ -69,7 +69,7 @@ class ReadoutExportController {
         def plateLayoutInstance = PlateLayout.get(params.id)
 
         if(accessAllowed(params.securityToken, plateLayoutInstance)){
-            def meta = ["id","PlateLayout", "PlateRow", "PlateCol", "AmountOfCells", "CellLine", "Inducer", "InducerConcentration", "Treatment", "Sample", "Control"]
+            def meta = ["id","PlateLayout", "PlateRow", "PlateCol", "AmountOfCells", "CellLine", "Inducer", "InducerConcentration", "Treatment", "Sample", "Control", "Accession", "AccessionType"]
             render meta as JSON
         }
         else{
@@ -178,6 +178,7 @@ class ReadoutExportController {
                 eq("plateLayout.id", params.long("id"))
                 createAlias('plateLayout', 'pl', CriteriaSpecification.LEFT_JOIN)
                 createAlias('sample', 'smpl', CriteriaSpecification.LEFT_JOIN)
+                createAlias('smpl.identifiers', 'ident', CriteriaSpecification.LEFT_JOIN)
                 createAlias('numberOfCellsSeeded', 'ncs', CriteriaSpecification.LEFT_JOIN)
                 createAlias('cellLine', 'cl', CriteriaSpecification.LEFT_JOIN)
                 createAlias('treatment', 'tr', CriteriaSpecification.LEFT_JOIN)
@@ -194,6 +195,8 @@ class ReadoutExportController {
                     property "tr.name"
                     property "smpl.name"
                     property "smpl.controlType"
+                    property "ident.name"
+                    property "ident.type"
                 }
                 order('row', 'desc')
                 order('col', 'asc')
