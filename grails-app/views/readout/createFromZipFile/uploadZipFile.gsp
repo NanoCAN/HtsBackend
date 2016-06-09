@@ -44,7 +44,7 @@
                     <g:message code="readout.assayType.label" default="Assay" />
 
                 </label>
-                <g:select id="assay" name="assay.id" from="${org.nanocan.plates.AssayType.list()}" optionKey="id" required="" class="one-to-one"/>
+                <g:select id="assay" name="assay.id" from="${org.nanocan.plates.AssayType.list()}" optionKey="id" optionValue="name" required="" class="one-to-one"/>
             </div>
 
         <div class="fieldcontain">

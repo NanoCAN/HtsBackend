@@ -283,6 +283,7 @@ class ReadoutController {
                 // Grab readout settings
                 def readoutInstance = new Readout(params)
                 flow.assay = readoutInstance.assay
+                flow.dateOfReadout = readoutInstance.dateOfReadout
 
                 // Grab file and check it exists
                 def dataFile = request.getFile("zippedFile")
