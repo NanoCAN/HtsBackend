@@ -40,6 +40,7 @@ class ReadoutExportController {
 
     def springSecurityService
     def securityTokenService
+    def readoutExportService
 
     private def accessAllowed = { securityToken, readoutInstance ->
         //check if user is authenticated
@@ -135,28 +136,7 @@ class ReadoutExportController {
         def readoutInstance = Readout.get(params.id)
 
         if(accessAllowed(params.securityToken, readoutInstance)){
-            def criteria = WellReadout.createCriteria()
-            def result = criteria.list {
-                eq("readout.id", params.long("id"))
-                createAlias('readout', 'ro', CriteriaSpecification.LEFT_JOIN)
-                createAlias('ro.plate', 'pl', CriteriaSpecification.LEFT_JOIN)
-                createAlias('ro.assay', 'assay', CriteriaSpecification.LEFT_JOIN)
-                createAlias('pl.plateLayout', 'playout', CriteriaSpecification.LEFT_JOIN)
-                projections {
-                    property "id"
-                    property "pl.id"
-                    property "ro.dateOfReadout"
-                    property "row"
-                    property "col"
-                    property "pl.replicate"
-                    property "playout.id"
-                    property "measuredValue"
-                    property "assay.name"
-                    property "assay.type"
-                }
-                order('row', 'desc')
-                order('col', 'asc')
-            }
+            def result = readoutExportService.getWellReadouts(params.long("id"))
 
             ObjectMapper mapper = new ObjectMapper()
             def jsonResult = mapper.writeValueAsString(result)
@@ -173,34 +153,7 @@ class ReadoutExportController {
         def plateLayoutInstance = PlateLayout.get(params.id)
 
         if(accessAllowed(params.securityToken, plateLayoutInstance)){
-            def criteria = WellLayout.createCriteria()
-            def result = criteria.list {
-                eq("plateLayout.id", params.long("id"))
-                createAlias('plateLayout', 'pl', CriteriaSpecification.LEFT_JOIN)
-                createAlias('sample', 'smpl', CriteriaSpecification.LEFT_JOIN)
-                createAlias('smpl.identifiers', 'ident', CriteriaSpecification.LEFT_JOIN)
-                createAlias('numberOfCellsSeeded', 'ncs', CriteriaSpecification.LEFT_JOIN)
-                createAlias('cellLine', 'cl', CriteriaSpecification.LEFT_JOIN)
-                createAlias('treatment', 'tr', CriteriaSpecification.LEFT_JOIN)
-                createAlias('inducer', 'ind', CriteriaSpecification.LEFT_JOIN)
-                projections {
-                    property "id"
-                    property "pl.id"
-                    property "row"
-                    property "col"
-                    property "ncs.name"
-                    property "cl.name"
-                    property "ind.name"
-                    property "ind.concentration"
-                    property "tr.name"
-                    property "smpl.name"
-                    property "smpl.controlType"
-                    property "ident.name"
-                    property "ident.type"
-                }
-                order('row', 'desc')
-                order('col', 'asc')
-            }
+            def result = readoutExportService.getPlateLayout(params.long("id"))
 
             ObjectMapper mapper = new ObjectMapper()
             def jsonResult = mapper.writeValueAsString(result)
@@ -211,6 +164,62 @@ class ReadoutExportController {
         else{
             render status: 403
         }
+    }
+
+    @Secured(['ROLE_USER'])
+    def download = {
+        def result = readoutExportService.getWellReadoutsWithLayout(params.long("id"))
+
+        def fileEnding = "csv"
+        if(params.separator == "\t") fileEnding = "txt"
+
+        response.setHeader("Content-disposition", "filename=${slideInstance.toString().replace(" ", "_")}.${fileEnding}")
+        response.contentType = "application/vnd.ms-excel"
+
+        def outs = response.outputStream
+
+        def header = meta.join(params.separator)
+
+        if(params.includeBlockShifts == "on")
+        {
+            results = spotExportService.includeBlockShifts(results, slideInstance)
+            header = "hshift${params.separator}vshift${params.separator}" + header
+        }
+
+        def depositionArray = depositionService.getDepositionArray(slideInstance.layout)
+
+        outs << "MIRACLE reverse phase protein array file format"
+        outs << "\n"
+        outs << "v.1.1"
+        outs << "\n"
+        outs << depositionArray//slideInstance.layout.depositionPattern?:""
+        outs << "\n"
+        outs << slideInstance.id
+        outs << "\n"
+        outs << slideInstance.barcode
+        outs << "\n"
+        outs << slideInstance.title
+        outs << "\n"
+        outs << slideInstance.antibody
+        outs << "\n"
+        outs << slideInstance.photoMultiplierTube
+        outs << "("
+        outs << slideInstance.photoMultiplierTubeSetting
+        outs << ")"
+        outs << "\n"
+        outs << slideInstance.layout.blocksPerRow
+        outs << "\n"
+        outs << header
+        outs << "\n"
+
+        results.each() {
+
+            outs << it.join(params.separator)
+            outs << "\n"
+        }
+        outs.flush()
+        outs.close()
+        return
     }
 
 }
