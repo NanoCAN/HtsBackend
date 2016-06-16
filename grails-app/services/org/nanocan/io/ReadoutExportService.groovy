@@ -2,7 +2,6 @@ package org.nanocan.io
 
 import org.hibernate.criterion.CriteriaSpecification
 import org.nanocan.layout.WellLayout
-import org.nanocan.plates.Readout
 import org.nanocan.plates.WellReadout
 
 class ReadoutExportService {
@@ -57,7 +56,7 @@ class ReadoutExportService {
                 property "tr.name"
                 property "smpl.name"
                 property "smpl.controlType"
-                property "ident.name"
+                property "ident.accessionNumber"
                 property "ident.type"
             }
             order('row', 'desc')

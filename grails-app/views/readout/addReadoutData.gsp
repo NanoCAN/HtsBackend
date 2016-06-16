@@ -25,7 +25,7 @@
 
             <g:hiddenField name="id" value="${readoutInstance.id}"></g:hiddenField>
 
-            <g:render template="readoutDataForm" model="${[fileEnding: fileEnding]}"/>
+            <g:render template="/readoutBatchImport/readoutDataForm" model="${[fileEnding: fileEnding]}"/>
 
             <fieldset class="buttons">
                 <g:submitToRemote update="headerSelection" action="readInputFile" name="buttonReadInputFile" value="Read selected sheet"/>

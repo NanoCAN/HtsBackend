@@ -58,11 +58,14 @@ class ReadoutHeatmapController {
                 it[1] = Math.round(Math.log(it[1])/Math.log(2))
             }
         }*/
+        result.each{
+            it[2] = getRowChar(it[2])
+        }
 
         result = [ data: result, meta: [
                 "id": [type: "num"],
                 "Value": [type: "num"],
-                "Row": [type: "num"],
+                "Row": [type: "cat"],
                 "Column": [type: "num"]
         ]]
 
@@ -71,6 +74,10 @@ class ReadoutHeatmapController {
 
         response.contentType = "text/json"
         render jsonResult
+    }
+
+    private getRowChar(int row) {
+        return row > 0 && row < 27 ? String.valueOf((char)(row + 64)) : null;
     }
 }
 

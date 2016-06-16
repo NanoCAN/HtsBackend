@@ -32,7 +32,7 @@ package org.nanocan.layout
 class Sample implements Serializable{
 
     static searchable = {
-        identifiers component: true
+        except = "identifiers"
     }
     String name
     String type
@@ -49,6 +49,10 @@ class Sample implements Serializable{
     String sampleGroupCDescription
 
     static hasMany = [identifiers: Identifier]
+
+    static mapping = {
+        name index: "sample_name_idx"
+    }
 
     static constraints = {
         uuid nullable: true
@@ -69,4 +73,5 @@ class Sample implements Serializable{
     {
         name
     }
+
 }

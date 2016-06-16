@@ -180,38 +180,6 @@ class ReadoutExportController {
 
         def header = meta.join(params.separator)
 
-        if(params.includeBlockShifts == "on")
-        {
-            results = spotExportService.includeBlockShifts(results, slideInstance)
-            header = "hshift${params.separator}vshift${params.separator}" + header
-        }
-
-        def depositionArray = depositionService.getDepositionArray(slideInstance.layout)
-
-        outs << "MIRACLE reverse phase protein array file format"
-        outs << "\n"
-        outs << "v.1.1"
-        outs << "\n"
-        outs << depositionArray//slideInstance.layout.depositionPattern?:""
-        outs << "\n"
-        outs << slideInstance.id
-        outs << "\n"
-        outs << slideInstance.barcode
-        outs << "\n"
-        outs << slideInstance.title
-        outs << "\n"
-        outs << slideInstance.antibody
-        outs << "\n"
-        outs << slideInstance.photoMultiplierTube
-        outs << "("
-        outs << slideInstance.photoMultiplierTubeSetting
-        outs << ")"
-        outs << "\n"
-        outs << slideInstance.layout.blocksPerRow
-        outs << "\n"
-        outs << header
-        outs << "\n"
-
         results.each() {
 
             outs << it.join(params.separator)

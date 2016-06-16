@@ -35,10 +35,11 @@ class ReadoutImportService {
 
     def nextStep
     def fileImportService
+
     /**
      * Main method
      */
-    def processResultFile(def objectInstance, String sheetContent, def columnMap, int skipLines, String progressId)
+    def processResultFile(def objectInstance, String sheetContent, def columnMap, int skipLines, String progressId, String format)
     {
         Scanner scanner = new Scanner(sheetContent)
 
@@ -63,16 +64,31 @@ class ReadoutImportService {
                 if(columnMap.col) newWellReadout.col = Integer.valueOf(currentLine[columnMap.col])
                 if(columnMap.row) newWellReadout.row = Integer.valueOf(currentLine[columnMap.row])
 
-                newWellReadout.measuredValue = Double.valueOf(currentLine[columnMap.measuredValue])
-
+                try {
+                    newWellReadout.measuredValue = Double.valueOf(currentLine[columnMap.measuredValue])
+                } catch(NumberFormatException nfe){
+                    newWellReadout.measuredValue = Double.NaN
+                }
                 //compute well position if necessary
                 if(columnMap.wellPosition != null)
                 {
                     String wellPosition = currentLine[columnMap.wellPosition]
                     wellPosition = wellPosition.replaceAll (/"/, '')
 
-                    newWellReadout.row = Character.getNumericValue(wellPosition.charAt(0))-9
-                    newWellReadout.col = Integer.valueOf(wellPosition.substring(1))
+                    try{
+                        int wellPositionNumeric = Integer.valueOf(wellPosition)
+
+                        int numOfCols
+                        if(format == "96-well") numOfCols = 16
+                        else if(format == "384-well") numOfCols = 24
+                        else if(format == "1536-well") numOfCols = 32
+
+                        newWellReadout.col = ((wellPositionNumeric-1) % numOfCols) + 1
+                        newWellReadout.row = ((wellPositionNumeric-1) / numOfCols) + 1
+                    } catch(NumberFormatException nfe){ //in case its not an integer we assume its alphanumeric well names
+                        newWellReadout.row = Character.getNumericValue(wellPosition.charAt(0))-9
+                        newWellReadout.col = Integer.valueOf(wellPosition.substring(1))
+                    }
                 }
 
                 objectInstance.addToWells(newWellReadout)
@@ -93,6 +109,30 @@ class ReadoutImportService {
 
         return objectInstance
     }
+
+    public ArrayList<String> readoutProperties = ["wellPosition", "row", "column", "measuredValue"]
+
+    def readSheet(filePath, sheet, minColRead, csvType, skipLines, columnSeparator, decimalSeparator, thousandSeparator, resultFileCfg){
+        //read sheet / file
+
+        def sheetContent = fileImportService.importFromFile(filePath, sheet, minColRead)
+
+        //convert CSV2 to CSV:
+        if (csvType == "CSV2") sheetContent = fileImportService.convertCSV2(sheetContent)
+
+        //convert custom CSV format to standard CSV:
+        else if (csvType == "custom") sheetContent = fileImportService.convertCustomCSV(sheetContent, columnSeparator, decimalSeparator, thousandSeparator)
+
+        def header
+
+        header = fileImportService.extractHeader(sheetContent, skipLines)
+
+        //matching properties
+        def matchingMap = createMatchingMap(resultFileCfg, header)
+
+        [header: header, matchingMap: matchingMap, totalSkipLines: (++skipLines), sheetContent: sheetContent]
+    }
+
 
     def createMatchingMap(def resultFileCfg, List<String> header) {
         def matchingMap = [:]

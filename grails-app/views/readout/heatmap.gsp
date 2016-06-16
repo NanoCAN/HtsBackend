@@ -48,7 +48,8 @@
                     },
                     "y": {
                         "title": "Row",
-                        "bw": 1
+                        "bw": 1,
+                        "levels": ${levels}
                     },
                     "color": {
                         "scale": {

@@ -57,6 +57,6 @@ class Readout implements Serializable{
     }
 
     String toString(){
-        "${dateOfReadout.toString()} - ${assay?.name?:'unknown assay'}"
+        "${dateOfReadout.dateString} - ${assay?.name?:'unknown assay'}"
     }
 }

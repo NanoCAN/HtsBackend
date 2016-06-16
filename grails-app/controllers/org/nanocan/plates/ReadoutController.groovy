@@ -41,7 +41,6 @@ class ReadoutController {
     def fileImportService
     def readoutImportService
     def progressService
-    def unzipService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -143,7 +142,14 @@ class ReadoutController {
     }
 
     def heatmap(){
-        [readoutId: params.id]
+        def readoutInstance = Readout.get(params.id)
+
+        def levels
+
+        if(readoutInstance.plate.format == "96-well") levels = '["H","G","F","E","D","C","B","A"]'
+        else if(readoutInstance.plate.format == "384-well") levels = '["L","K","J","I","H","G","F","E","D","C","B","A"]'
+        else if(readoutInstance.plate.format == "1536-well") levels = '["X","W","V","U","T","S","R","Q","P","O","N","M","L","K","J","I","H","G","F","E","D","C","B","A"]'
+        [readoutId: params.id, levels: levels]
     }
 
     def scatter(){
@@ -171,40 +177,6 @@ class ReadoutController {
         [readoutInstance: readoutInstance, configs: PlateResultFileConfig.list(), fileEnding: fileEnding, sheets: sheets]
     }
 
-    final ArrayList<String> readoutProperties = ["wellPosition", "row", "column", "measuredValue"]
-
-    private def readSheet(filePath, sheet, minColRead, csvType, skipLines, columnSeparator, decimalSeparator, thousandSeparator, resultFileCfg){
-        //read sheet / file
-        def sheetContent
-        try{
-            sheetContent = fileImportService.importFromFile(filePath, sheet, minColRead)
-        }catch(IOException e)
-        {
-            render "<div class='message'>Could not read file</div>"
-            return
-        }
-
-        //convert CSV2 to CSV:
-        if (csvType == "CSV2") sheetContent = fileImportService.convertCSV2(sheetContent)
-
-        //convert custom CSV format to standard CSV:
-        else if (csvType == "custom") sheetContent = fileImportService.convertCustomCSV(sheetContent, columnSeparator, decimalSeparator, thousandSeparator)
-
-        def header
-
-        try{
-            header = fileImportService.extractHeader(sheetContent, skipLines)
-        }catch(NoSuchElementException e) {
-            render "<div class='message'>Could not read header!</div>"
-            return
-        }
-
-        //matching properties
-        def matchingMap = readoutImportService.createMatchingMap(resultFileCfg, header)
-
-        [header: header, matchingMap: matchingMap, totalSkipLines: (++skipLines), sheetContent: sheetContent]
-    }
-
     def readInputFile(){
         def readoutInstance = Readout.get(params.id)
 
@@ -220,15 +192,25 @@ class ReadoutController {
         def filePath = readoutInstance.resultFile.filePath
 
         if (params.skipLines == "on") skipLines = params.int("howManyLines")
-        def result = readSheet(filePath, params.int("sheet")?:0, params.int("minColRead")?:1, params.csvType, skipLines, params.columnSeparator, params.decimalSeparator, params.thousandSeparator, resultFileCfg)
 
+        def result
+        try {
+            result = readoutImportService.readSheet(filePath, params.int("sheet") ?: 0, params.int("minColRead") ?: 1, params.csvType, skipLines, params.columnSeparator, params.decimalSeparator, params.thousandSeparator, resultFileCfg)
+        } catch(IOException e)
+        {
+            render "<div class='message'>Could not read file</div>"
+            return
+        } catch(NoSuchElementException nsee){
+            render "<div class='message'>Could not read header</div>"
+            return
+        }
         //keeping content for later
         flash.totalSkipLines = result.totalSkipLines
         flash.sheetContent = result.sheetContent
 
         render view: "assignFields", model: [progressId: "pId${params.id}",
                                              header: result.header,
-                                             readoutProperties: readoutProperties,
+                                             readoutProperties: readoutImportService.readoutProperties,
                                              matchingMap: result.matchingMap]
     }
 
@@ -252,7 +234,7 @@ class ReadoutController {
             return
         }
 
-        def result = readoutImportService.processResultFile(readoutInstance, flash.sheetContent, columnMap, flash.totalSkipLines, progressId)
+        def result = readoutImportService.processResultFile(readoutInstance, flash.sheetContent, columnMap, flash.totalSkipLines, progressId, readoutInstance.plate.format)
 
         progressService.setProgressBarValue(progressId, 100)
 
@@ -261,153 +243,4 @@ class ReadoutController {
         else render "${readoutInstance.wells.size()} readout values have been added to the database and linked to this readout."
     }
 
-    def zipOptions(){
-        render template: "readoutDataForm", model: [fileEnding: params.fileEnding]
-    }
-
-    def createFromZipFileFlow = {
-
-        beginState{
-            action{
-                [readoutInstance: new Readout()]
-            }
-            on("success").to "uploadZipFile"
-        }
-
-        uploadZipFile {
-            on("upload").to "unzipFiles"
-        }
-
-        unzipFiles{
-            action {
-                // Grab readout settings
-                def readoutInstance = new Readout(params)
-                flow.assay = readoutInstance.assay
-                flow.dateOfReadout = readoutInstance.dateOfReadout
-
-                // Grab file and check it exists
-                def dataFile = request.getFile("zippedFile")
-                if (dataFile.empty) {
-                    flash.error = 'A file has to be chosen.'
-                    render(view: 'createFromZipFile/createFromZippedFile')
-                    return
-                }
-                // unpack zip file
-                def unpacked = unzipService.unpack(dataFile.getInputStream())
-                flow.unpacked = unpacked
-
-                // get first file from zip to to read header
-                def firstFile = unpacked.get(unpacked.keySet().first())
-                flow.filePath = firstFile.path
-
-                def index = 1
-                flow.fileEnding = FilenameUtils.getExtension(firstFile.path)
-                flow.sheets = fileImportService.getSheets(firstFile).collect {
-                    [index: index++, name: it]
-                }
-            }
-            on("success").to "fileSettings"
-            on(Exception).to "handleError"
-        }
-
-        fileSettings{
-            on("readHeader").to "readHeader"
-        }
-
-        readHeader{
-            action{
-                def skipLines = 0
-                if (params.skipLines == "on") skipLines = params.int("howManyLines")
-                flow.skipLines = skipLines
-
-                def resultFileCfg
-                flow.sheet = params.int("sheet")?:0
-                flow.minColRead = params.int("minColRead")?:1
-                flow.csvType = params.csvType
-                flow.columnSeparator = params.columnSeparator
-                flow.decimalSeparator = params.decimalSeparator
-                flow.thousandSeparator = params.thousandSeparator
-
-                def result = readSheet(flow.filePath, flow.sheet, flow.minColRead, flow.csvType, flow.skipLines,
-                        flow.columnSeparator, flow.decimalSeparator, flow.thousandSeparator, resultFileCfg)
-
-                flow.matchingMap = result.matchingMap
-                flow.header = result.header
-                flow.readoutProperties = readoutProperties
-                flow.totalSkipLines = result.totalSkipLines
-            }
-            on("success").to "assignFields"
-        }
-
-        assignFields{
-            on("process").to "importReadouts"
-        }
-
-        handleError{
-
-        }
-
-        importReadouts {
-            action {
-                def columnMap = [:]
-
-                params.keySet().each {
-                    if (it.toString().startsWith("column") && it.toString() != "columnSeparator") columnMap.put(params.get(it), Integer.parseInt(it.toString().split('_')[1]))
-                }
-
-                // Add transactional property
-                Readout.withTransaction { status ->
-                    try {
-                        def unpacked = flow.unpacked
-                        def listOfReadouts = []
-                        unpacked.keySet().each { key ->
-                            log.debug("-\nParsing " + key)
-
-                            //extract barcode from filename
-                            def currentFile = unpacked.get(key)
-                            def fileBaseName = FilenameUtils.getBaseName(key)
-
-                            //find matching plate
-                            def plate = Plate.findByBarcode(fileBaseName)
-                            if(!plate) throw new Exception("File ${key} could not be matched to an existing plate. Check filenames and try again. If necessary create new plates with barcodes matching the file base names (without extension).")
-
-                            def readoutInstance = new Readout()
-                            readoutInstance.assay = flow.assay
-                            readoutInstance.dateOfReadout = flow.dateOfReadout
-                            readoutInstance.plate = plate
-                            readoutInstance.resultFile =  fileUploadService.createResultFile(currentFile, "Result", key)
-
-                            def resultFileCfg // for later use
-
-                            //read file content
-                            def result = readSheet(readoutInstance.resultFile.filePath, flow.sheet, flow.minColRead, flow.csvType, flow.skipLines,
-                                    flow.columnSeparator, flow.decimalSeparator, flow.thousandSeparator, resultFileCfg)
-
-                            //Check if headers are identical
-                            if(result.header != flow.header) throw new Exception("Header of file ${key} is not identical to header of first file, process aborted and rolled back.")
-
-                            readoutImportService.processResultFile(readoutInstance, result.sheetContent, columnMap, flow.totalSkipLines, null)
-
-                            listOfReadouts << readoutInstance
-                            log.debug "Finished processing file ${key} successfully."
-                        }
-                        flow.listOfReadouts = listOfReadouts.sort{it.id}
-                    } catch (Exception e) {
-                        //If an error occurs, rollback all changes
-                        status.setRollbackOnly()
-                        flow.error = e.message
-                    }
-                }
-                if(flow.error){
-                    throw new Exception(flow.error)
-                }
-            }
-            on(Exception).to "handleError"
-            on("success").to "showImportedReadouts"
-        }
-
-        showImportedReadouts{
-            log.info "Parsing readouts completed successfully."
-        }
-    }
 }
