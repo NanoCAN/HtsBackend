@@ -30,6 +30,8 @@
 package org.nanocan.plates
 
 import org.nanocan.file.PlateResultFileConfig
+import org.nanocan.project.Experiment
+import org.nanocan.project.Project
 import org.springframework.dao.DataIntegrityViolationException
 import org.apache.commons.io.FilenameUtils
 import org.springframework.security.access.annotation.Secured
@@ -45,8 +47,67 @@ class ReadoutController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index() {
+        //deal with max
+        if(!params.max && session.maxReadout) params.max = session.maxReadout
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [readoutInstanceList: Readout.list(params), readoutInstanceTotal: Readout.count()]
+        session.maxReadout = params.max
+
+        //deal with offset
+        params.offset = params.offset?:(session.offsetReadoutResult?:0)
+        session.offsetReadoutResult = params.offset
+
+        def readoutInstanceList
+        def readoutInstanceListTotal
+
+        if(session.experimentSelected)
+        {
+            readoutInstanceList = []
+            Experiment.get(session.experimentSelected).plateLayouts.each{ playout ->
+                Plate.findAllByPlateLayout(playout).each{ plate ->
+                    readoutInstanceList.addAll(Readout.findAllByPlate(plate))
+                }
+            }
+            readoutInstanceList.unique()
+        }
+        else if(session.projectSelected)
+        {
+            readoutInstanceList = []
+            def experiments = Experiment.findAllByProject(Project.get(session.projectSelected as Long))
+            experiments.each{
+                it.plateLayouts.each { playout ->
+                    Plate.findAllByPlateLayout(playout).each { plate ->
+                        readoutInstanceList.addAll(Readout.findAllByPlate(plate))
+                    }
+                }
+            }
+            readoutInstanceList.unique()
+        }
+        else
+        {
+            readoutInstanceList = Readout.list(params)
+            readoutInstanceListTotal = Readout.count()
+        }
+
+        if (session.experimentSelected || session.projectSelected)
+        {
+            readoutInstanceListTotal = readoutInstanceList?.size()?:0
+            if (params.int('offset') > readoutInstanceListTotal) params.offset = 0
+
+            if(readoutInstanceListTotal > 0)
+            {
+                int rangeMin = Math.min(readoutInstanceListTotal, params.int('offset'))
+                int rangeMax = Math.min(readoutInstanceListTotal, (params.int('offset') + params.int('max')))
+
+                readoutInstanceList = readoutInstanceList.asList()
+                if(params.sort) readoutInstanceList = readoutInstanceList.sort{it[params.sort]}
+                else readoutInstanceList.sort{ a,b -> a.id <=> b.id}
+                if(params.order == "desc") readoutInstanceList = readoutInstanceList.reverse()
+
+                readoutInstanceList = readoutInstanceList.subList(rangeMin, rangeMax)
+            }
+        }
+
+        [readoutInstanceList: readoutInstanceList, readoutInstanceTotal: readoutInstanceListTotal]
     }
 
     def create() {

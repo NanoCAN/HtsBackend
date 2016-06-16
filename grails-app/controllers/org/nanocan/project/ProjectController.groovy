@@ -122,7 +122,7 @@ class ProjectController {
      * Add a parameter to session to keep track of the selected project
      */
     def updateSelectedProject() {
-        session.projectSelected = params.projectSelect
+        session.projectSelected = params.long("projectSelect")
 
         //if selected experiment is not in the currently selected project reset selected experiment
         if (session.experimentSelected && !Experiment.findByProject(Project.get(params.projectSelect)))
